@@ -1,0 +1,191 @@
+
+<div>Administracion de Productos</div>
+
+ <div class="container mt-5">
+        <div class="mb-3 d-flex align-items-center">
+            <label for="categorySelect" style=" font-weight: bold; margin: 15px;"class="form-label">Categoría:</label>
+            <select class="form-select me-2" id="categorySelect" name="category">
+                {{#each categories}}
+                <option value="{{this}}">{{this}}</option>
+                {{/each}}
+            </select>
+            <button id="search" class="btn btn-success">Buscar</button>
+            
+            <div class="d-flex mx-3">
+                <div class="d-flex justify-content-end mt-3">
+                    <button class="btn text-success fw-bold border border-success" onclick="addProduct()">Añadir Producto <i
+                    class="bi bi-plus-lg"></i></button>
+                </div>
+                
+            </div>
+             <div class="d-flex mx-3">
+                <button style="border: none;  background: none;">
+                    <a class="btn btn-warning"style="border-radius: 85px; padding: 20px;" href="/api/sessions/profile">
+                        <i class="bi bi-cart-fill"></i> Profile
+                    </a>
+                </button>
+            </div>
+        </div>
+
+        <!-- productos -->
+
+         <table class="table">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Categoría</th>
+                    <th>Stock</th>
+                    <th id="priceHeader" style="cursor: pointer;">Precio</th>
+                    <th>Imagen</th>
+                    <th>Opciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each payload}}
+                <tr>
+                    <td>
+                        <p class="text-decoration-none text-dark"
+                            style="font-weight: bold; font-size: 1rem; font-family: 'Arial', sans-serif;">
+                            {{this._doc.name}}
+                        </p>
+                        
+                    </td>
+                    <td>{{this._doc.category}}</td>
+                    <td>{{this._doc.stock}}</td>
+                    <td>
+                        <span style="font-weight: bold; font-size: 18px; color: #c50b46;">
+                            ${{this._doc.price}}
+                        </span>
+                    </td>
+                    <td>
+                        <img src="{{this._doc.image}}" alt="{{this._doc.name}}" width="100">
+                    </td>
+                    <td>
+                        <button class="btn text-warning" onclick="editProduct(this)" data-productid="{{this._doc._id}}">
+                            <i class="bi bi-pencil-square">Edit Product</i>
+                        </button>
+                        <button class="btn text-danger" onclick="deleteProduct(this)"
+                            data-productid="{{this._doc._id}}">
+                            <i class="bi bi-trash3"></i>
+                        </button>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+
+        <nav aria-label="Página">
+            <ul class="pagination justify-content-center">
+                {{#if hasPrevPage}}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{prevPage}}">Anterior</a>
+                </li>
+                {{else}}
+                <li class="page-item disabled">
+                    <span class="page-link">Anterior</span>
+                </li>
+                {{/if}}
+                {{#each pageNumbers}}
+                <li class="page-item {{#if current}}active{{/if}}">
+                    <a class="page-link" href="?page={{number}}">{{number}}</a>
+                </li>
+                {{/each}}
+                {{#if hasNextPage}}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{nextPage}}">Siguiente</a>
+                </li>
+                {{else}}
+                <li class="page-item disabled">
+                    <span class="page-link">Siguiente</span>
+                </li>
+                {{/if}}
+            </ul>
+        </nav>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script>
+    //Editar Producto
+    function editProduct(button) {
+            const productId = button.getAttribute("data-productid");
+            window.location.href = `/api/products/manager/${productId}`;
+    }
+
+    //Añadir Producto
+    function addProduct() {
+            window.location.href = "/api/products/manager/createProduct";
+    }
+
+    function deleteProduct(button) {
+            const productId = button.getAttribute("data-productid");
+            fetch(`/api/products/manager/${productId}`, {
+                method: 'DELETE',
+            })
+                .then(response => {
+                    if (response.ok) {
+                        window.location.reload();
+                    } else {
+                        Toastify({
+                            text: "Error al eliminar el producto",
+                            duration: 3000,
+                            close: true,
+                            gravity: "bottom",
+                            position: "right",
+                        }).showToast();
+                    }
+                })
+                .catch(error => {
+                    // Mostrar un mensaje de error si ocurre un error de red u otro error durante la eliminación
+                    Toastify({
+                        text: "Error de red al eliminar el producto",
+                        duration: 3000,
+                        close: true,
+                        gravity: "bottom",
+                        position: "right",
+                    }).showToast();
+                    console.error('Error:', error);
+                });
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+            // Obtener elementos necesarios
+            const categorySelect = document.getElementById("categorySelect");
+            const searchButton = document.getElementById("searchButton");
+            const priceHeader = document.getElementById("priceHeader");
+
+            priceHeader.addEventListener("click", function () {
+                // Obtener el valor actual del query param "sort"
+                const currentUrl = new URL(window.location.href);
+                const queryParams = new URLSearchParams(currentUrl.search);
+                const currentSort = queryParams.get("sort");
+
+                // Calcular el nuevo valor de "sort" (alternar entre 1 y -1)
+                const newSort = currentSort === "1" ? "-1" : "1";
+
+                // Actualizar el query param "sort" en la URL
+                queryParams.set("sort", newSort);
+                currentUrl.search = queryParams.toString();
+
+                // Redireccionar a la URL actualizada
+                window.location.href = currentUrl.toString();
+            });
+
+            // Agregar un evento de clic al botón "Buscar"
+            searchButton.addEventListener("click", function () {
+                // Obtener el valor de la categoría seleccionada
+                const selectedCategory = categorySelect.value;
+
+                if (selectedCategory === 'Todas') {
+                    const currentUrl = new URL(window.location.href);
+
+                    currentUrl.searchParams.delete('query');
+                    window.location.href = currentUrl.toString();
+                } else {
+                    window.location.href = `?query=${selectedCategory}`
+                }
+            });
+        });
+
+
+
+    </script>         
