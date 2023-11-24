@@ -1,10 +1,12 @@
 const { userModel } = require('../dao/models/user.model');
 const {cartModel} =require('../dao/models/cart.model')
-const { createHash, generateToken, generateRecoveryToken } = require('../../utils');
+const { createHash, generateRecoveryToken } = require('../../utils');
 const passport = require('passport');
 const sessionsDao = require("../dao/sessionsDao")
 const logger = require("../utils/logger")
 const jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer')
+
 const dotenv =require('dotenv')
 
 dotenv.config();
@@ -94,7 +96,7 @@ exports.login = async (req, res) => {
     if (!req.user) {
         return res.status(400).send({ status: "error", error: "Credenciales inválidas." });
     }
-
+    
     req.session.user = {
         first_name: req.user.first_name,
         last_name: req.user.last_name,
@@ -148,14 +150,52 @@ exports.restorePassword = async (req, res) => {
 
 
 exports.sendRecoverMail = async (req, res) => {
-    const email = req.body
+    let email = req.body.email;
+    const token = generateRecoveryToken(email)
+    try {
+
+    if (!email) {
+        throw new Error("No se ha proporcionado una dirección de correo electrónico válida.");
+      }
     
-    
-    const userMail = await sessionsDao.findUserByEmail(email)
+
+    let user = await sessionsDao.findUserByEmail(email)
+      console.log.user
 
     
 
+    const mailOptions = {
+        to: email,
+        subject: 'Recuperación de Contraseña',
+        html: `<p>Hola <b>${user.first_name} ${user.last_name}</b>,</p>
+        Haz clic en el siguiente enlace para restablecer tu contraseña: <a href="http://localhost:8080/api/sessions/restore">Cambia tu contraseña</a>`,
+      };
 
+    let send = await sendEmail(mailOptions);
+    res.status(200).send('Correo de recuperación enviado con éxito.')
+ } catch(error){
+    console.error('Error al enviar el correo electrónico:', error);
+    res.status(500).send('Error al enviar el correo electrónico: ', error);
+ }
 
 }
 
+
+async function sendEmail(mailOptions) {
+    const transporter = nodemailer.createTransport({
+      
+      service: 'gmail',
+      auth: {
+        user: 'pavelcuentas@gmail.com', // Coloca tu dirección de correo aquí
+        pass: 'fbvv jzcg ismp fkts',      // Coloca tu contraseña aquí
+      },
+    });
+  
+    try {
+      const info = await transporter.sendMail(mailOptions);
+      console.log('Correo electrónico enviado:', info);
+    } catch (error) {
+      console.error('Error al enviar el correo electrónico:', error);
+      res.status(500).send('Error al enviar el correo electrónico sendemail: ',error);
+    }
+}

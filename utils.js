@@ -13,13 +13,13 @@ const isValidatePassword = (user, password) => bcrypt.compareSync(password, user
 //token
 
 const generateRecoveryToken= (email) => {
-    const secretKey = 'tu-secreto'; // Cambia esto con una clave segura
+    const secretKey =  SECRET_KEY; // Cambia esto con una clave segura
     const expirationTime = '1h'; // El token expira en 1 hora
   
     return jwt.sign({ email }, secretKey, { expiresIn: expirationTime });
   }
 const verifyRecoveryToken= (token) => {
-    const secretKey = 'tu-secreto'; // Cambia esto con la misma clave utilizada para generar
+    const secretKey = SECRET_KEY; // Cambia esto con la misma clave utilizada para generar
   
     try {
       const decoded = jwt.verify(token, secretKey);
@@ -34,7 +34,7 @@ const verifyRecoveryToken= (token) => {
 
 module.exports = {
     createHash,
-    isValidatePassword,
     generateRecoveryToken,
+    isValidatePassword,
     verifyRecoveryToken
 }

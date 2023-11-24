@@ -3,9 +3,19 @@
 
  async function findUserByEmail(email) {
     try {
-        return await userModel.findOne({ email: email });
+        const user = await userModel.findOne({ email: email});
+        return user
     } catch (error) {
         throw new Error('Error al buscar al usuario por correo electrónico');
+    }
+}
+
+async function findUserById(id) {
+    try {
+        const user = await userModel.findById(id);
+        return user
+    } catch (error) {
+        throw new Error('Error al buscar al usuario por ID');
     }
 }
 
@@ -19,6 +29,7 @@ async function updateUser(user) {
 
 module.exports = {
     findUserByEmail,
+    findUserById,
     updateUser,
 };
 

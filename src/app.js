@@ -8,6 +8,7 @@ const sessionRouter = require('./routes/sessions.router')
 const cartRouter = require("./routes/carts.router")
 const productRouter = require("./routes/products.router")
 const mockingRouter = require("./routes/mocks.router")
+const userRouter = require('./routes/user.router')
 const errorHandler = require("./middleware/errors/errorHandler")
 const passport = require('passport')
 const logger = require ('./utils/logger')
@@ -61,15 +62,8 @@ app.use(express.urlencoded({ extended: true }))
 app.use("/api/sessions/", sessionRouter)
 app.use("/api/products", productRouter);
 app.use("/api/carts", cartRouter);  
+app.use("/api/users/", userRouter);
 app.use("/api/mockingproducts", mockingRouter);
 app.use(errorHandler);
 
-/* app.use (adLogger)
 
-app.get('/loggerTest', (req, res) => {
-    req.logger.debug('debug')
-    req.logger.http('http')
-    req.logger.warning('warning')
-    req.logger.error('error')
-    res.send('Logger test')
-  }) */

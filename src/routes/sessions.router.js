@@ -23,7 +23,8 @@ router.get("/github", passport.authenticate("github", { scope: ["user:email"] })
 router.get("/githubcallback", passport.authenticate("github", { failureRedirect: "/api/sessions" }), sessionsController.githubAuthCallback)
 router.post('/restore', sessionsController.restorePassword)
 router.get("/recoverPassword", sessionsController.renderRecoverPass);
-//router.post("/recoverPassword", sessionsController.sendRecoverMail)
+router.post("/recoverPassword", sessionsController.sendRecoverMail)
+router.get("/recoverPassword/:uid", sessionsController.restorePassword)
 
 module.exports = router;
 
