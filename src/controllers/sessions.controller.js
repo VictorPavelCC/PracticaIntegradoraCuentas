@@ -1,6 +1,6 @@
 const { userModel } = require('../dao/models/user.model');
 const {cartModel} =require('../dao/models/cart.model')
-const { createHash, generateRecoveryToken } = require('../../utils');
+const { createHash, generateRecoveryToken ,verifyRecoveryToken } = require('../../utils');
 const passport = require('passport');
 const sessionsDao = require("../dao/sessionsDao")
 const logger = require("../utils/logger")
@@ -58,16 +58,31 @@ exports.renderProfile = (req, res) => {
 };
 
 exports.renderRestore = (req, res) => {
+    const token = req.params.token;
+
     try {
-        res.render('restore.handlebars')
+
+        const emailTime = verifyRecoveryToken(token)
+
+        if(!emailTime){
+            res.render('recoverypassword.handlebars')
+        }
+        else{
+            res.render('restore.handlebars')
+        }
+        
+
+
+        
     } catch (error) {
+        console.error('Error al renderizar la recuperación de contraseña:', error);
         res.status(500).send("Error de render Restor.")
     }
 };
 
 //RecoverPassword
 exports.renderRecoverPass = (req,res) =>{
-    try{
+    try{        
         res.render('recoverpassword.handlebars')
     }catch(error){
         res.status(500).send("Error de render Recover.")
@@ -168,7 +183,7 @@ exports.sendRecoverMail = async (req, res) => {
         to: email,
         subject: 'Recuperación de Contraseña',
         html: `<p>Hola <b>${user.first_name} ${user.last_name}</b>,</p>
-        Haz clic en el siguiente enlace para restablecer tu contraseña: <a href="http://localhost:8080/api/sessions/restore">Cambia tu contraseña</a>`,
+        Haz clic en el siguiente enlace para restablecer tu contraseña: <a href="http://localhost:8080/api/sessions/recoverPassword/${token}">Cambia tu contraseña</a>`,
       };
 
     let send = await sendEmail(mailOptions);

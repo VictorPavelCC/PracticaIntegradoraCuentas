@@ -10,7 +10,7 @@ router.get("/register", sessionsController.renderRegister )
 router.get("/", sessionsController.renderLogin)
 router.get('/profile', sessionsController.renderProfile);
 router.get('/restore', sessionsController.renderRestore)
-
+router.get('/recoverPassword/:token', sessionsController.renderRestore)
 
 router.get("/logout", sessionsController.logout)
 router.post("/register", passport.authenticate("register", {failureRedirect:"/api/sessions/failRegister"}), sessionsController.register)
