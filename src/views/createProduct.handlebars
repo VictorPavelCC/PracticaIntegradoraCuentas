@@ -2,9 +2,6 @@
     <div class="product-info">
       <p><strong>Titulo:</strong> <input type="text" id="productName" class="form-control mb-2"
           placeholder="Nombre del Producto"></p>
-      {{!--  <p><strong>Descripción:</strong> <textarea id="productDescription" class="form-control mb-2"
-          placeholder="Descripción"></textarea></p> --}}
-
       <p><strong>Categoría:</strong> <input type="text" id="productCategory" class="form-control mb-2"
           placeholder="Categoría"></p>
 
@@ -21,12 +18,12 @@
         <strong>URL Imagen:</strong>
         <input type="text" id="productImageUrl" class="form-control mb-2" placeholder="URL de la Imagen">
       </p>
-      <button type="button" class="btn btn-primary w-100" onclick="applyChanges()">Aplicar</button>
+      <button type="button" class="btn btn-primary w-100" onclick="applyChanges()">Cargar Imagen</button>
       <div class="d-flex justify-content-between w-100 mt-3">
-        <button type="button" class="action-btn save-btn flex-grow-1" onclick="saveChanges()">
+        <button type="button" class="btn btn-success flex-grow-1" onclick="saveChanges()">
           Guardar
         </button>
-        <button type="button" class="action-btn cancel-btn ml-3 flex-grow-1" onclick="goBack()">
+        <button type="button" class="btn btn-danger ml-3 flex-grow-1" onclick="goBack()">
           Cancelar
         </button>
       </div>
@@ -35,7 +32,6 @@
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
  <script>
 
-    //Regresar
     function goBack() {
       window.history.back();
     }
@@ -55,7 +51,7 @@
 
     function saveChanges() {
       let productName = document.getElementById("productName").value;
-      //let productDescription = document.getElementById("productDescription").value;
+
       let productCategory = document.getElementById("productCategory").value;
       let productStock = document.getElementById("productStock").value;
       let productPrice = document.getElementById("productPrice").value;
@@ -63,7 +59,6 @@
 
       let product = {
         name: productName,
-        //description: productDescription,
         category: productCategory,
         stock: parseInt(productStock),
         price: parseInt(productPrice),
@@ -98,7 +93,7 @@
           }
           setTimeout(function () {
             window.location.href = redirectUrl;
-          }, 2000); // 3000 milisegundos = 3 segundos
+          }, 2000);
         })
         .catch(error => {
           Toastify({

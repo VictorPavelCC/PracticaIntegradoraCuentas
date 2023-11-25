@@ -1,4 +1,4 @@
-# Mocking
+# Practica Integradora 
 
 **Victor Pavel Cuentas Calle**
 
@@ -22,3 +22,5 @@ luego te envia a profile para ver tu perfil
 ## Mock
 La ruta (http://localhost:8080/api/mockingproducts/) creara 100 productos y los devuelve en forma de json
 ![Mock](https://github.com/VictorPavelCC/3eraPreEntregaCuentasCalle/blob/main/src/img/mockingProducts.png?raw=true)
+
+
