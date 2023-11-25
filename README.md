@@ -46,6 +46,6 @@ Para eliminar productos basta con solo presionar el boton rojo en esta pagina
 Aunque no se pida hice una pagina para el cambio de roles, basicamente hace lo mismo que pide la entrega y se actuliza la pagina  al cambiar el rol del usuario,
 ademas tambien conserve el acceso a la pagina que corresponde a la forma de la entrega (http://localhost:8080/api/users/premium/:uid) presionando el boton pagina se accede a ella
 
-![UserManager](https://github.com/VictorPavelCC/PracticaIntegradoraCuentas/blob/main/src/img/EditProduct.png?raw=true)
+![UserManager](https://github.com/VictorPavelCC/PracticaIntegradoraCuentas/blob/main/src/img/UserManager.png?raw=true)
 
 
