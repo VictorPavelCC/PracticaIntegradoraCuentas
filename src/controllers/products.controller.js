@@ -52,7 +52,6 @@ exports.getAllProducts = async (req, res) => {
     const options = { limit, page, sort };
 
     const sessionUser = req.session.user;
-    //console.log("usuario: ", sessionUser)
 
     let result = await productsDao.getProductList(query, options, sessionUser);
     res.render("productsList", result);
@@ -139,13 +138,7 @@ exports.deleteProduct = async (req, res) => {
     console.error(error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
-/* 
-  if (!name) {
-    res.send({ status: "error", error: "Missing parameters" });
-  } else {
-    let result = await productsDao.deleteProduct(name);
-    res.send(result);
-  } */
+
 };
 
 exports.getManagerProducts = async (req, res) =>{ 

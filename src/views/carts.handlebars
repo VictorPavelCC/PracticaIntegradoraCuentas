@@ -1,3 +1,4 @@
+
 <div class="container" style="margin-top: 14%;  padding: 15px; border-radius: 29px;     background: darkkhaki;">
     <h2 class="mt-4">Tu Carrito:</h2>
     <ul class="list-group mt-3">
@@ -8,7 +9,7 @@
           <div class="row align-items-center">
             <div class="col-md-1">
               <button class="btn btn-danger"style="padding: 20px; border-radius: 50px;" 
-              onclick="eliminarProducto('{{this.info._doc._id}}', '{{this.quantity}}', '${cid}')">
+              onclick="eliminarProducto('{{this.info._doc._id}}', '{{this.quantity}}')">
                 <i class="fas fa-trash-alt"></i>
               </button>
             </div>
@@ -52,11 +53,12 @@
 
 
 <script>
-    function eliminarProducto(productId, quantity, cartId) {
-      const cid = '{{cartId}}';
-      
+    function eliminarProducto(productId, quantity) {
+     const cartId = "cid"
 
-      fetch(`/api/carts/${cid}/products/${productId}`, {
+     
+
+      fetch(`{{cartId}}/products/${productId}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

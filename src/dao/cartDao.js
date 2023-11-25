@@ -99,28 +99,21 @@ async function removeCartProduct(cid, pid, quantity) {
     }
   
     const productIndex = cart.products.findIndex((item) => item.product.toString() === pid);
-  
+    
+    
     if (productIndex === -1) {
         return res.status(404).json({ error: "Producto no encontrado en el carrito" });
     }
-  
-    const product = cart.products[productIndex];
-    const productData = await productModel.findById(pid);
-  
-    if (quantity > product.quantity) {
-        return res.status(400).json({ error: "La cantidad a eliminar es mayor que la cantidad en el carrito" });
-    }
-  
-    await productData.save();
-  
-    product.quantity -= quantity; // Resta la cantidad eliminada del carrito
-    if (product.quantity === 0) {
-        cart.products.splice(productIndex, 1); // Si la cantidad en el carrito llega a cero, elimina el producto del carrito
-    }
-  
-    await cart.save(); // Guarda el carrito actualizado
+
+    cart.products.splice(productIndex, 1);
+    const updatedCart = await cartModel.findByIdAndUpdate(cid, cart, { new: true });
+
+    const product = await productModel.findById(pid)
+    product.stock += parseInt(quantity);
+
   } catch (error) {
-    throw new Error('Error al eliminar el producto del carrito');
+    console.log(error)
+
   }
 }
 

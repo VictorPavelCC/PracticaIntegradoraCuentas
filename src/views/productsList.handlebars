@@ -64,7 +64,7 @@
                     </td>
                     
                     <td>
-                        <button class="btn" onclick="addToCart(this)" id="{{this._doc._id}}">
+                        <button class="btn" onclick="addToCart(this,'{{this._doc.owner}}')" id="{{this._doc._id}}">
                             <i class="bi bi-cart-fill"></i>
                         </button>
                     </td>
@@ -146,11 +146,24 @@
 
 
 
-        function addToCart(item) {
+        function addToCart(item, owner) {
 
             const productId = item.id;
-            const cartId = '{{userCartId}}';
-
+            
+            const user =  '{{ userID }}'
+            const cartId = '{{ userCartId }}';
+            const userRole = "{{ user.rol }}";
+            if (userRole === "premium" && owner === user) {             
+                 Toastify({
+                    text: "No puedes añadir tu propio producto al carrito.",
+                    gravity: "bottom",
+                    position: "right",
+                    style: {
+                    background: "linear-gradient(to right, #ff6666, #cc3333)",
+            },
+            duration: 3000,
+            }).showToast();
+            }else{ 
             fetch(`/api/carts/${cartId}`, {
                 method: 'PUT',
                 headers: {
@@ -183,7 +196,7 @@
                     console.log(error);
                 });
         }
-
+}
         function addProduct() {
             window.location.href = "/api/products/manager/createProduct";
     }

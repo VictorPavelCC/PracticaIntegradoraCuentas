@@ -26,10 +26,10 @@
       </p>
       <button type="button" class="btn btn-primary w-100" onclick="applyChanges()">Aplicar</button>
       <div class="d-flex justify-content-between w-100 mt-3">
-        <button type="button" class="action-btn save-btn flex-grow-1" onclick="saveChanges('{{payload._doc._id}}')">
+        <button type="button" class="btn btn-success flex-grow-1" onclick="saveChanges('{{payload._doc._id}}')">
           Guardar
         </button>
-        <button type="button" class="action-btn cancel-btn ml-3 flex-grow-1" onclick="goBack()">
+        <button type="button" class="btn btn-danger ml-3 flex-grow-1" onclick="goBack()">
           Cancelar
         </button>
       </div>
@@ -37,8 +37,6 @@
   </div>
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
   <script>
-    //Cambiar la imagen
-    //usaba var
     
     function applyChanges() {
       let imageUrl = document.getElementById("productImageUrl").value;
@@ -46,7 +44,6 @@
       productImage.src = imageUrl;
     }
 
-    //Guardar los datos
     function saveChanges(productId) {
       let productName = document.getElementById("productName").value;
       let productCategory = document.getElementById("productCategory").value;
@@ -84,7 +81,7 @@
           }).showToast();
           setTimeout(function () {
             goBack();
-          }, 2000); // 3000 milisegundos = 3 segundos
+          }, 2000); 
         })
         .catch(error => {
           Toastify({
@@ -99,7 +96,7 @@
 
     }
 
-    //Regresar
+
     function goBack() {
       window.history.back();
     }
