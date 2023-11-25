@@ -1,5 +1,19 @@
 const sessionsDao = require("../dao/sessionsDao")
+const userModel = require("../dao/models/user.model")
+const usersDao = require("../dao/userDao")
 
+
+exports.renderUsers = async (req, res) => {
+  try {
+
+      const users = await usersDao.getAllUsers();
+      const usersData = users.map(user => user.toObject())
+      res.render("users", {users: usersData})
+  } catch (error) {
+    console.log(error)
+      res.status(500).send("Error de render")
+  }
+};
 exports.ChangeRol = async(req, res) =>{
     let id = req.params.id;
     try {
@@ -21,5 +35,18 @@ exports.ChangeRol = async(req, res) =>{
         console.error(error);
         res.status(500).json({ error: 'Internal Server Error' });
       }
+}
+
+exports.getUserList = async(req,res) =>{
+
+  try{
+    let users = await usersDao.getAllUsers();
+    res.render('users',users )
+
+  }catch(error){
+    console.log(error)
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+
 }
 

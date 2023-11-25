@@ -65,5 +65,3 @@ app.use("/api/carts", cartRouter);
 app.use("/api/users/", userRouter);
 app.use("/api/mockingproducts", mockingRouter);
 app.use(errorHandler);
-
-

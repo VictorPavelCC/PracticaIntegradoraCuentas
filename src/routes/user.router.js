@@ -5,6 +5,7 @@ const userController = require("../controllers/user.controller");
 const router = Router();
 
 router.get("/premium/:id", isAdmin,userController.ChangeRol);
+router.get("/",isAdmin,userController.renderUsers);
 
 
 

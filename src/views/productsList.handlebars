@@ -23,7 +23,7 @@
                              
                 <button style="border: none;  background: none;">
                     <a class="btn btn-warning"style="border-radius: 85px; padding: 20px;" href="/api/sessions/profile">
-                         Profile
+                         <i class="bi bi-arrow-left-circle"> Profile </i>
                     </a>
                 </button>
             </div>
@@ -173,7 +173,6 @@
             })
                 .then(res => {
                     if (res.ok) {
-                        console.log("se ha añadido el producto")
                         Toastify({
 
                             text: "Producto agregado al carro",
@@ -205,3 +204,4 @@
 
     </script>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    

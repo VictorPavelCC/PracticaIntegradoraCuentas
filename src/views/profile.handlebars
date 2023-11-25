@@ -10,11 +10,14 @@
     <button type="submit" class="btn btn-danger">Logout</button>
 </form>
 <div>
-    <a href="/api/products/productsList" ><button id="userButton"class="btn btn-primary mt-3 mx-5">Ir a la Tienda</button></a>
+    <a style="text-decoration: none;" href="/api/products/productsList" ><button id="userButton"class="btn btn-primary mt-3 mx-5">Ir a la Tienda</button></a>
 </div>
 
 <div>
-    <a href="/api/products/manager" ><button id="adminButton" class="btn btn-success mt-3 mx-5 text-decoration-none" style="display: none;">Ir al administrador de Productos</button></a>
+    <a style="text-decoration: none;" href="/api/products/manager" ><button id="productsAdmin" class="btn btn-success mt-3 mx-5 text-decoration-none" style="display: none;">Administrador de Productos</button></a>
+</div>
+<div>
+    <a style="text-decoration: none;" href="/api/users" ><button id="usersAdmin" class="btn btn-warning mt-3 mx-5 text-decoration-none" style="display: none;">Administrador de Roles</button></a>
 </div>
 
 <script>
@@ -24,8 +27,10 @@
 
     // Verifica si el usuario es un administrador y muestra el botón 
     if (userRole === "Admin") {
-      document.getElementById('adminButton').style.display = 'block';
-      document.getElementById('userButton').style.display = 'none'
+      document.getElementById('userButton').style.display = 'none';
+      document.getElementById('productsAdmin').style.display = 'block';
+      document.getElementById('usersAdmin').style.display = 'block';
+
     }
   });
 </script>

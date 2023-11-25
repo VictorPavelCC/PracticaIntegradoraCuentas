@@ -1,0 +1,92 @@
+<div class="container mt-5 " >
+    <div style="display:flex; align-items:center;">
+        <button style="border: none;  background: none; padding:2px; margin-right:12px;">
+                    <a class="btn btn-warning"style="border-radius: 85px; padding: 20px;" href="/api/sessions/profile">
+                         <i class="bi bi-arrow-left-circle"></i> Profile
+                    </a>
+        </button>
+        <h2 >Lista de Usuarios</h2>
+        
+    </div>
+
+<table class="table">
+            <thead>
+                <tr >
+                    <th style="font-size: 20px;">Nombre</th>
+            
+                    <th style="font-size: 20px;">Email</th>
+                    <th style="font-size: 20px;">Rol</th>
+                    <th style="font-size: 20px;">Opciones</th>
+                    
+                </tr>
+            </thead>
+        <tbody>
+
+        {{#each users }}
+            <tr>
+                <td> <p class="text-decoration-none text-dark"
+                    style="font-weight: bold; font-size: 1rem; font-family: 'Arial', sans-serif;"> {{this.first_name}} {{this.last_name}}</p>
+                </td>
+                <td> {{this.email}} </td>
+                <td> {{this.rol}}</td>
+                <td>
+                    <button class="btn btn-warning" id="{{this._id}}" rol="{{this.rol}}" onclick="changeRol('{{this._id}}','{{this.rol}}')">Cambiar Rol a User / Premium</button></a>
+
+                </td>
+                <td>
+                <a class="btn btn-danger" href="/api/users/premium/{{this._id}}">pagina</a>
+                </td>
+            </tr>
+        {{/each}}
+
+
+            </tbody>
+
+</div>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+
+<script>
+function changeRol(id,rol){
+    const userId = id
+    const userRol = rol
+
+if (userRol === "Admin" ) {             
+            Toastify({
+                    text: "De momento no se puede Cambiar el rol de un Administrador",
+                    gravity: "bottom",
+                    position: "right",
+                    style: {
+                    background: "linear-gradient(to right, #ff6666, #cc3333)",
+            },
+            duration: 3000,
+            }).showToast();
+            }else{ 
+    
+        fetch(`/api/users/premium/${userId}`, {
+                method: 'GET',
+            })
+        .then((res) => {
+          if (res.ok) {
+            Toastify({
+            text: "Producto agregado al carro",
+            gravity: "bottom",
+            position: "right",
+            style: {
+                background: "linear-gradient(to right, #66ff66, #33cc33)",
+            },duration: 1000
+            }).showToast();
+            console.log("El rol fue cambiado con exito");
+            location.reload();
+          } else {
+            console.error("Error al cambiar el rol");
+          }
+        })
+        .catch((error) => {
+          console.error("Error de red al cambiar el rol", error);
+        });
+
+}
+}
+
+</script>
