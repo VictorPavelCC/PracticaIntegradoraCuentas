@@ -24,16 +24,6 @@ router.post("/", productsController.postProduct)
 router.put("/:id", isPremium, productsController.putProduct)
 
 
-//manager
-
-/* 
-router.get("/manager/new-product", authToken, isAdmin, productsController.getCreateProduct);
-router.post("/manager/new-product", authToken, isAdmin, checkProductValues, productsController.postCreateProduct);
-router.get("/manager/:id", authToken, isAdmin, productsController.getProductManager);
-router.delete("/manager/:id", authToken, isAdmin, productsController.deleteProduct);
- */
-
-
 
 
 module.exports = router

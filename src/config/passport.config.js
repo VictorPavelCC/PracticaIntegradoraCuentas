@@ -34,11 +34,6 @@ const initializePassport = () => {
                     cart:newCart._id
                 }
 
-                //Rol System
-                if (email == "adminCoder@coder.com" && password == "adminCod3r123") {
-                    newUser.rol = "admin"
-                    await userModel.updateOne({ _id: newUser._id }, newUser);
-                }
 
 
                 let result = await userModel.create(newUser);
