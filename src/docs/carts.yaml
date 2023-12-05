@@ -57,23 +57,7 @@ paths:
         "200":
           description: Producto agregado al carrito con éxito
         "500":
-          description: Error al agregar producto al carrito
-    delete:
-      summary: Elimina un carrito por ID
-      tags:
-        - Carts
-      parameters:
-        - name: cid
-          in: path
-          required: true
-          description: ID del carrito
-          schema:
-            type: ObjecId  
-      responses:
-        "200":
-          description: Carrito eliminado con éxito
-        "500":
-          description: Error al eliminar el carrito              
+          description: Error al agregar producto al carrito              
   /api/carts/{cid}/products/{pid}:
     put:
       summary: Actualiza un producto del carrito
