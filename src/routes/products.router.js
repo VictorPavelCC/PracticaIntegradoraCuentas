@@ -12,7 +12,6 @@ router.get("/productsList", productsController.getProductList);
 router.get("/manager",isAdmin,productsController.getManagerProducts);
 router.get("/manager/createProduct",isPremium, productsController.getCreateProduct);
 
-//añadir errores
 router.post("/manager/createProduct",isPremium, productsController.postCreateProduct);
 router.get("/manager/:pid", isPremium, productsController.getManagerProduct);
 router.delete("/manager/:id", isPremium, productsController.deleteProduct);

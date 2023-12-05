@@ -15,6 +15,10 @@ const logger = require ('./utils/logger')
 const initializePassport = require('./config/passport.config')
 const config = require("./config/config")
 
+//swagger
+const swaggerJsDoc = require('swagger-jsdoc')
+const swaggerUiExpress = require('swagger-ui-express')
+
 
 const app = express()
 const PORT = 8080
@@ -52,12 +56,33 @@ app.use(session({
 }))
 
 
+
+
+
+
 initializePassport();
 app.use(passport.initialize())
 app.use(passport.session())
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+
+//swagger Options
+
+const swaggerOptions = {
+    definition : {
+        openapi: '3.1.0',
+        info: {
+            title: "Ecommerce Pavel",
+            description: "API en base a un ecommerce by me"
+        },
+    },
+    apis:['src/docs/*.yaml']
+}
+
+//Swagger
+const specs = swaggerJsDoc(swaggerOptions)
+app.use('/apidocs',swaggerUiExpress.serve, swaggerUiExpress.setup(specs))
 
 app.use("/api/sessions/", sessionRouter)
 app.use("/api/products", productRouter);

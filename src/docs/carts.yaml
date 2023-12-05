@@ -1,0 +1,98 @@
+paths:
+  /api/carts/:
+    get:
+      summary: Obtiene todos los carritos que existen
+      tags:
+        - Carts
+      responses:
+        "200":
+          description: Lista de carritos obtenida con éxito
+        "500":
+          description: Error al obtener los carritos
+  /api/carts/{cid}:
+    get:
+      summary: Obtiene detalles de un carrito por ID
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: ID del carrito
+          schema:
+            $type: ObjecId
+      responses:
+        "200":
+          description: "Los datos del Carrito fueron Obtenidos con Exito"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+        "404":
+          description: Carrito no encontrado
+        "500":
+          description: Error al obtener detalles del carrito
+    put:
+      summary: Agrega productos al carrito
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: ID del carrito
+          schema:
+            $type: ObjecId
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddToCartInput'
+      responses:
+        "200":
+          description: Producto agregado al carrito con éxito
+        "500":
+          description: Error al agregar producto al carrito
+    delete:
+      summary: Elimina un carrito por ID
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: ID del carrito
+          schema:
+            type: ObjecId  
+      responses:
+        "200":
+          description: Carrito eliminado con éxito
+        "500":
+          description: Error al eliminar el carrito              
+      
+
+
+components:
+  schemas:
+    Cart:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: Id generado por mongoDB
+        user:
+          type: ObjectId
+          description: Id del usuario asignado al carrito
+        products:
+          type: array
+          description: Array de Productos y sus respectivas Cantidades
+    AddToCartInput:
+      type: object
+      properties:
+        _id:
+          type: ObjecId
+          description: Id generado en MongoDB
+        quantity:
+          type: number
+          description: Cantidad de productos a agregar al carrito      

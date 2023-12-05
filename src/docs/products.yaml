@@ -1,0 +1,147 @@
+paths:
+  /api/products/:
+    get:
+      summary: Obtiene todos los Productos
+      tags:
+        - Products
+      responses:
+        "200":
+          description: "Datos Obtenidos :D"
+        "500":
+          description: "Error al obtener Productos"
+  /api/products/{id}:
+    get:
+      summary: Obtiene datos de un Productos en especifico
+      tags:
+        - Products
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Id del Producto
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: "Datos Obtenidos"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        "500":
+          description: "Error al obtener Producto"
+    put:
+      summary: Modifica datos de un Producto
+      tags:
+        - Products
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Id del Producto
+          schema:
+            $type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductInput'      
+      responses:
+        "200":
+          description: Datos Modificado con Exito
+        "404":
+          description: Producto no encontrado        
+        "500":
+          description: Error al modificar Producto
+  /api/products/manager/createProduct:
+    post:
+      summary: Crea un nuevo Producto (solo para usuarios Premium o Admin)
+      tags:
+        - Products
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductInput'
+      responses:
+        "201":
+          description: Producto creado con éxito
+        "403":
+          description: Acceso no autorizado (no es administrador)
+        "500":
+          description: Error al crear el producto
+  /api/products/manager/{id}:
+    delete:
+      summary: Elimina un producto por ID (solo para usuarios nivel Admin y el Creador del Producto)
+      tags:
+        - Products
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID del producto a eliminar
+          schema:
+            $type: string 
+      responses:
+        "204":
+          description: Producto eliminado con éxito
+        "403":
+          description: Acceso no autorizado (no es administrador)
+        "404":
+          description: Producto no encontrado
+        "500":
+          description: Error al eliminar el producto
+
+  
+
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        _id:  
+          type: ObjecId
+          description: Id generado en MongoDB
+        name: 
+          type: String
+          description: Nombre del Producto
+        category: 
+          type: String
+          description: Categoria del Producto
+        stock:
+          type: number
+          description: Stock del Producto
+        price:
+          type: number
+          description: Precio
+        image:
+          type: String
+          description: Imagen del Producto
+        owner:
+          type: String
+          description: Id del Creador del Producto   
+
+    ProductInput:
+      type: object
+      properties:
+        name:
+          type: String
+          description: Nombre del producto
+        category:
+          type: String
+          description: Categoría del producto
+        stock:
+          type: number
+          description: Stock del producto
+        price:
+          type: number
+          description: Precio
+        image:
+          type: String
+          description: Imagen del producto
+      required:
+        - name
+        - category
+        - stock
+        - price      
