@@ -49,3 +49,9 @@ ademas tambien conserve el acceso a la pagina que corresponde a la forma de la e
 ![UserManager](https://github.com/VictorPavelCC/PracticaIntegradoraCuentas/blob/main/src/img/UserManager.png?raw=true)
 
 
+## Documentacion de API (Swagger)
+
+Esta se ubica en la siguiente ruta : http://localhost:8080/apidocs/
+Debes iniciar sesion (Premium/Admin) para crear productos de lo contrario saldra acceso no autorizado
+
+![DocumentacionSwagger](https://github.com/VictorPavelCC/PracticaIntegradoraCuentas/blob/main/src/img/DocumentacionSwagger.png?raw=true)

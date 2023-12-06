@@ -61,7 +61,7 @@ paths:
                   description: Precio del producto
                 image:
                   type: string
-                  description: Link a imagen del producto          
+                  description: Link de la imagen del producto          
       responses:
         "200":
           description: Datos Modificado con Exito
