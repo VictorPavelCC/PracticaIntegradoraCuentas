@@ -45,7 +45,23 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ProductInput'      
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Nombre del producto
+                category:
+                  type: string
+                  description: Categoria del producto
+                stock:
+                  type: number
+                  description: Cantidad de unidades disponibles del producto
+                price:
+                  type: number
+                  description: Precio del producto
+                image:
+                  type: string
+                  description: Link a imagen del producto          
       responses:
         "200":
           description: Datos Modificado con Exito
@@ -63,7 +79,23 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ProductInput'
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Nombre del producto
+                category:
+                  type: string
+                  description: Categoria del producto
+                stock:
+                  type: number
+                  description: Cantidad productos disponibles
+                price:
+                  type: number
+                  description: Precio del producto
+                image:
+                  type: string
+                  description: Link de la imagen del producto
       responses:
         "201":
           description: Producto creado con éxito
@@ -121,27 +153,3 @@ components:
         owner:
           type: String
           description: Id del Creador del Producto   
-
-    ProductInput:
-      type: object
-      properties:
-        name:
-          type: String
-          description: Nombre del producto
-        category:
-          type: String
-          description: Categoría del producto
-        stock:
-          type: number
-          description: Stock del producto
-        price:
-          type: number
-          description: Precio
-        image:
-          type: String
-          description: Imagen del producto
-      required:
-        - name
-        - category
-        - stock
-        - price      
