@@ -123,7 +123,23 @@ paths:
             description: El producto se elimino del carrito.
           "500":
             description: Error interno al intentar eliminar producto del carrito.   
-
+  /api/carts/{cid}/purchase:
+    get:  
+      summary: Crea un Ticket de Compra
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required:
+          description: Id del Cart
+          schema:
+            $type: ObjecId
+      responses:
+          "200":
+            description: Se Creo el Ticket de Compra Exitosamente
+          "500":
+            description: Error al crear el Ticket
 
 components:
   schemas:

@@ -133,7 +133,6 @@ exports.createCart = async (req, res) => {
       const productsNotPurchased = []; // No disponible
       let totalPrice = 0;
 
-
       for (const cartItem of cart.products) {
         // Stock
         const product = await productModel.findById(cartItem.product);
@@ -141,7 +140,7 @@ exports.createCart = async (req, res) => {
           product.stock -= cartItem.quantity;
           await product.save();
           productsToPurchase.push(cartItem);
-
+          
           totalPrice += product.price * cartItem.quantity;
         } else {
 
@@ -149,7 +148,6 @@ exports.createCart = async (req, res) => {
         }
       }
       const amount = totalPrice
-  
     
       const ticketData = {
         cart: cart._id,
@@ -159,7 +157,7 @@ exports.createCart = async (req, res) => {
       };
       
       const TicketSave = await ticketDao.createTicket(ticketData);
-  
+      console.log("llega3")
       cart.products = productsNotPurchased;
       await cart.save();
       const resume = cart.products.map(async (p) => {
@@ -172,7 +170,6 @@ exports.createCart = async (req, res) => {
       });
       const dataCompra = await Promise.all(resume);
     
-
       //Mail
 
       /* const transport = nodemailer.createTransport({
@@ -221,6 +218,7 @@ exports.createCart = async (req, res) => {
         cartId: cid,
       });
     } catch (error) {
+      console.log(error)
       res.status(500).json({ status: 'error', message: 'Internal server error' });
     }
   }
