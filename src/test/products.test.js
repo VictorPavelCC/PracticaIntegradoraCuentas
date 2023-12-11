@@ -27,6 +27,16 @@ describe('Testing Products',() => {
         stock: 66,
         image: 'otro.png'
     };
+
+    const ProductModif = {
+        name: 'Producto de Prueba2 Modificado',
+        category: 'prueba',
+        price: 6666,
+        stock: 26,
+        image: 'otro2.png'
+    };
+
+    let productId
     it( 'Obtiene todos los Products', async function(){
         this.timeout(5000)
 
@@ -44,14 +54,46 @@ describe('Testing Products',() => {
         this.timeout(5000)
 
         try {       
-            const result = await requester.post('/api/products/manager/createProduct').send(newProduct)
-            //const result = await productDao.postProduct(newProduct) Funciona
- 
-            console.log('product', result.body);
-            //expect(response.status).to.equal(200);
+            //const result = await requester.post('/api/products/manager/createProduct').send(newProduct)
+            let result = await productDao.postProduct(newProduct)
+            
+            console.log('product', result.payload);
+            productId = result.payload._id;
+            //productId = result.body.product._id;
+            //expect(result.status).to.equal(200);
             
         } catch (error) {
             console.log("Error al Crear el Product", error)
+            assert.fail("Test de createProduct Con Errores")
+        } 
+    })
+
+    it('PUT Product: Modifica un producto ', async function(){
+        this.timeout(5500)
+
+        try {       
+            
+            let result = await productDao.putProduct(productId,ProductModif)
+
+            //expect(response.status).to.equal(200);
+            
+        } catch (error) {
+            console.log("Error al Modificar el Product", error)
+            assert.fail("Test de createProduct Con Errores")
+        } 
+    })
+
+    it('DELETE Product: Elimina un producto ', async function(){
+        this.timeout(6000)
+
+        try {       
+            
+            let result = await productDao.deleteProduct(productId)
+
+            //expect(response.status).to.equal(200);
+            
+        } catch (error) {
+            console.log("Error al Modificar el Product", error)
             assert.fail("Test de createProduct Con Errores")
         } 
     })
