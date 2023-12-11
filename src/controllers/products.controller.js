@@ -203,7 +203,7 @@ exports.getCreateProduct = async (req, res) => {
 
 
 exports.postCreateProduct = async (req, res) =>{
-  const { name, description, category, stock, price, image } = req.body;
+  const { name, category, stock, price, image } = req.body;
 
   const user= req.session.user;
   
@@ -213,7 +213,6 @@ exports.postCreateProduct = async (req, res) =>{
   try {
     const newProduct = {
       name,
-      description,
       category,
       stock,
       price,
