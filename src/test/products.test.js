@@ -13,13 +13,7 @@ const URL = process.env.MONGO_URL_TEST
 const expect = chai.expect;
 const requester = supertest('http://localhost:8080');
 describe('Testing Products',() => {
-    before(function () {
-        mongoose.connect(URL).then(() => { console.log('Base de Datos Conectada'); done() })
-        
-        this.timeout(1000)
-    })
-
-
+   
     const newProduct = {
         name: 'Producto de Prueba2',
         category: 'prueba',
@@ -42,8 +36,9 @@ describe('Testing Products',() => {
 
         try {
             const result = await productDao.getAllProducts()
-            //console.log(result)
+            
             assert.strictEqual(Array.isArray(result.docs) && result.docs.length>0, true)
+            
         } catch (error) {
             console.log("Error al obtener los Products", error)
             assert.fail("Test Con Errores")
@@ -57,7 +52,7 @@ describe('Testing Products',() => {
             //const result = await requester.post('/api/products/manager/createProduct').send(newProduct)
             let result = await productDao.postProduct(newProduct)
             
-            console.log('product', result.payload);
+            //console.log('product', result.payload);
             productId = result.payload._id;
             //productId = result.body.product._id;
             //expect(result.status).to.equal(200);
@@ -79,7 +74,7 @@ describe('Testing Products',() => {
             
         } catch (error) {
             console.log("Error al Modificar el Product", error)
-            assert.fail("Test de createProduct Con Errores")
+            assert.fail("Test de PUT Con Errores")
         } 
     })
 
@@ -94,7 +89,7 @@ describe('Testing Products',() => {
             
         } catch (error) {
             console.log("Error al Modificar el Product", error)
-            assert.fail("Test de createProduct Con Errores")
+            assert.fail("Test de DELETE Con Errores")
         } 
     })
 

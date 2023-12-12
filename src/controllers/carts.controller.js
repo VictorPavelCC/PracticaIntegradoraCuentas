@@ -157,7 +157,7 @@ exports.createCart = async (req, res) => {
       };
       
       const TicketSave = await ticketDao.createTicket(ticketData);
-      console.log("llega3")
+
       cart.products = productsNotPurchased;
       await cart.save();
       const resume = cart.products.map(async (p) => {

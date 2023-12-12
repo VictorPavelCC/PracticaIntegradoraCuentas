@@ -5,7 +5,8 @@ const { productModel } = require("./models/product.model")
 async function createCart() {
   try {
     const newCart = new cartModel({ products: [] });
-    return newCart.save();
+    await newCart.save();
+    return newCart 
   } catch (error) {
     console.error(error);
     throw new Error('Error al crear el carrito');
