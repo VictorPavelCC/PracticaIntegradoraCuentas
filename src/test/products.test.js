@@ -55,7 +55,8 @@ describe('Testing Products',() => {
             //console.log('product', result.payload);
             productId = result.payload._id;
             //productId = result.body.product._id;
-            //expect(result.status).to.equal(200);
+            //expect(result.payload).to.equal(200);
+            assert.strictEqual(result.result, 'success');
             
         } catch (error) {
             console.log("Error al Crear el Product", error)
@@ -71,7 +72,7 @@ describe('Testing Products',() => {
             let result = await productDao.putProduct(productId,ProductModif)
 
             //expect(response.status).to.equal(200);
-            
+            expect(result.result).to.equal('success');
         } catch (error) {
             console.log("Error al Modificar el Product", error)
             assert.fail("Test de PUT Con Errores")
@@ -85,7 +86,7 @@ describe('Testing Products',() => {
             
             let result = await productDao.deleteProduct(productId)
 
-            //expect(response.status).to.equal(200);
+            expect(result.result).to.equal('success');
             
         } catch (error) {
             console.log("Error al Modificar el Product", error)

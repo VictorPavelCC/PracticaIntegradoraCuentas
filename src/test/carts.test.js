@@ -10,7 +10,7 @@ dotenv.config()
 
 const URL = process.env.MONGO_URL_TEST
 const requester = supertest('http://localhost:8080');
-
+const expect = chai.expect;
 
 describe('Testing Carts',() => {
     before(function () {
@@ -27,10 +27,10 @@ describe('Testing Carts',() => {
 
         
         try {
-            const result = await cartDao.createCart();
-           
-            //api/carts/make
-            //console.log(result.body)
+            let result = await cartDao.createCart();
+
+            assert.ok(result); //carrito creado
+            assert.strictEqual(result.products.length, 0); // El carrito debería estar vacío al inicio
             
         } catch (error) {
             console.log("Error al obtener Cart", error)
@@ -39,12 +39,15 @@ describe('Testing Carts',() => {
 
     })
     const productId= '65775a2e7d394b4bde1ed0b0'
-    const CartId = '65785d22bde03e575e81a91e'
+    const CartId = '65785d22bde03e575e81a91e' //
+    const CartID2 = '657a7ebe514d3a92d56a5b22'
     it('GET Obtiene todos los Carritos', async function(){
         this.timeout(5000)
         try {
-            const result = await requester.get('/api/carts/')
-            //expect(result.statusCode).to.be.eql(200);
+            let result = await requester.get('/api/carts/')
+            
+            expect(result.status).to.be.eql(200);
+            assert.strictEqual(Array.isArray(result.body.payload) && result.body.payload.length>0, true)
         } catch (error) {
             console.log("Error en el Get Carritos", error)
             assert.fail("Test Con Errores")
@@ -58,7 +61,9 @@ describe('Testing Carts',() => {
         this.timeout(5000)
 
         try {
-            const result = await requester.get(`/api/carts/${CartId}`)    
+            let result = await requester.get(`/api/carts/${CartID2}`)    
+            expect(result.statusCode).to.be.eql(200);
+
         } catch (error) {
             console.log("Error al obtener Carrito", error)
             assert.fail("Test Con Errores")
@@ -69,8 +74,9 @@ describe('Testing Carts',() => {
 
         try {
             //const result = await requester.put(`/api/carts/${CartId}`).send({productId})    
-            let result = await cartDao.addToCart(CartId,productId)
-            //expect(result.body).to.have.property('ok').to.equal('Producto agregado correctamente');
+            let result = await cartDao.addToCart(CartId,productId)            
+            assert.deepStrictEqual(result, { message: 'producto Añadido al Carrito' });
+            
         } catch (error) {
             console.log("Error en el Al añadir Producto", error)
             assert.fail("Test Con Errores")
@@ -80,8 +86,9 @@ describe('Testing Carts',() => {
 
 
         try {
-            const result = await cartDao.removeCartProduct(CartId,productId,1)
+            let result = await cartDao.removeCartProduct(CartId,productId,1)
             //const result = await requester.put(`/${CartId}/products/${productId}`)
+            assert.deepStrictEqual(result, { message: 'El producto fue eliminado' });
         } catch (error) {
             console.log("Error en el Eliminar product", error)
             assert.fail("Test Con Errores")

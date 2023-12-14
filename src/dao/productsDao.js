@@ -63,9 +63,6 @@ async function postProduct(productData) {
 
 
 async function putProduct(id, productData) {
-
-
-  //const result = await productModel.updateMany(productData);
   
   const result = await productModel.findByIdAndUpdate(id , productData);
   return { result: "success", payload: result };

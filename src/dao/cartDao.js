@@ -25,7 +25,7 @@ async function getCart(id) {
   try {
     return cartModel.findById(id).populate("products.product");
   } catch (error) {
-    throw new Error('Error al obtener el carrito');
+    throw new Error('Error al obtener el carrito Dao');
   }
 }
 
@@ -57,6 +57,7 @@ async function addToCart(cid, productId) {
     
     await productModel.updateOne({ _id: productId }, product);
     await cartModel.updateOne({ _id: cid }, cart);
+    return { message: 'producto Añadido al Carrito' }
   } catch (error) {
     console.error(error);
     throw new Error('Error al agregar un producto al carrito');
@@ -112,6 +113,7 @@ async function removeCartProduct(cid, pid, quantity) {
     const product = await productModel.findById(pid)
     product.stock += parseInt(quantity);
 
+    return { message: 'El producto fue eliminado' };
   } catch (error) {
     console.log(error)
 

@@ -33,6 +33,7 @@ exports.createCart = async (req, res) => {
     try {
       
       const cart = await CartDao.getCart(id);
+      console.log(cart)
 
       if (!id || id.trim() === "") {
         CustomError.createError({
@@ -42,16 +43,17 @@ exports.createCart = async (req, res) => {
           errorCode: EError.INVALID_PARAMS,
         });
       }
-
-    const resume = cart.products.map(async (p) => {
+      //antes
+      //const resume = cart.products.map(async (p)
+    const resume = await Promise.all(cart.products.map(async (p) => {
       const data = {};
       data.info = await productModel.findById(p.product);
       data.quantity = p.quantity;
       data.total = data.info.price * p.quantity;
       
       return data;
-    });
-    const products = await Promise.all(resume);
+    }));
+    //const products = await Promise.all(resume);
   
     let total = 0;
     
@@ -62,7 +64,7 @@ exports.createCart = async (req, res) => {
       res.render("carts", {
         status: "success",
         cartId: id,
-        products,
+        products: resume,
         total: total,
       });
     } catch (error) {
