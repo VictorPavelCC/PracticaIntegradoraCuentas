@@ -31,7 +31,9 @@ const initializePassport = () => {
                     email,
                     age,
                     password: createHash(password),
-                    cart:newCart._id
+                    cart:newCart._id,
+                    documents: [ ],
+                    last_connection: new Date(),
                 }
 
 
@@ -53,14 +55,14 @@ const initializePassport = () => {
     passport.use("login", new localStrategy({ usernameField: "email" }, async (username, password, done) => {
         try {
             const user = await userModel.findOne({ email: username }).populate("cart");
-
+            
             if (!user) {
                 console.log("Usuario ingresado no existe.");
                 return done(null, false);
             }
 
             if (!isValidatePassword(user, password)) return done(null, false);
-
+            
         
             return done(null, user);
 

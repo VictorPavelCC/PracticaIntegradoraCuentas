@@ -46,10 +46,11 @@ exports.renderProfile = (req, res) => {
             return res.redirect('/api/sessions');
         }
 
-        let { first_name, last_name, email, age, rol } = req.session.user;
-
+        let { first_name, last_name, email, age, rol , _id} = req.session.user;
+        
+        
         res.render('profile.handlebars', {
-            first_name, last_name, email, age, rol
+            first_name, last_name, email, age, rol, _id
         });
 
     } catch (error) {
@@ -91,9 +92,11 @@ exports.renderRecoverPass = (req,res) =>{
 
 
 
-exports.logout = (req, res) => {
+exports.logout = async (req, res) => {
+    await userModel.findByIdAndUpdate(req.session.user._id, { last_connection: new Date() });
     req.session.destroy(err => {
         if (!err) {
+            
             logger.info(`se ha cerrado la sesion actual`);
             res.redirect('/api/sessions')
         } else {
@@ -122,6 +125,8 @@ exports.login = async (req, res) => {
         _id: req.user._id
     };
 
+    await userModel.findByIdAndUpdate(req.session.user._id, { last_connection: new Date() });
+    
     logger.info(`Usuario Identificado: Bienvenido ${req.session.user.first_name} ${req.session.user.last_name}`)
     res.redirect("/api/sessions/profile");
 };

@@ -9,6 +9,13 @@ const userSchema = new mongoose.Schema({
   password: String,
   cart: { type: mongoose.Schema.Types.ObjectId, ref: "carts" },
   rol: { type: String, default: "user" },
+  documents: [
+    {
+      name: {type: String},
+      reference: {type: String},
+    }
+  ],
+  last_connection: {type: Date},  
 })
 const userModel = mongoose.model(userCollection, userSchema)
 

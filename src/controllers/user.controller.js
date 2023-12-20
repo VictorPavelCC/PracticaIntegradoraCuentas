@@ -14,6 +14,11 @@ exports.renderUsers = async (req, res) => {
       res.status(500).send("Error de render")
   }
 };
+
+exports.renderUploadDocument = async (req, res) => {
+  const uid = req.params.uid;
+  res.render('uploadDocument', { uid });
+}
 exports.ChangeRol = async(req, res) =>{
     let id = req.params.id;
     try {
@@ -50,3 +55,76 @@ exports.getUserList = async(req,res) =>{
 
 }
 
+
+exports.uploadDocument = async(req,res) => {
+  let uid = req.params.uid;
+  try {
+ 
+
+  if (!req.files || req.files.length === 0) return res.status(400).send({ status: 'error', error: 'file not uploaded' })
+  
+
+  const user = await sessionsDao.findUserById(uid)
+  if (!user) return res.status(404).send({ status: 'error', error: 'user no found' })
+
+  const newDocuments = req.files.map((file) => {
+    return {
+      name: file.originalname,
+      reference: file.path,
+    };
+  });
+
+  user.documents.push(...newDocuments);
+
+  const result = await usersDao.updateData(uid, { documents: user.documents } )
+  if (!result) return res.status(400).send({ status: 'error', error: 'file not uploaded en data' })
+
+  res.send({ message: 'Archivo Subido Correctamente' })
+  } catch (error) {
+    console.error(error);
+        return res.status(500).json({
+            error: "Error en uploadDocument"
+        });
+  }
+
+}
+
+exports.UserToPremium = async (req, res) => {
+  const uid = req.params.uid;
+
+  try {
+    
+    const user = await sessionsDao.findUserById(uid)
+    
+    if (!user) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+    if (user.rol == "premium"){
+      return res.status(404).json({ error: 'Usuario Ya es Premium' });
+    }
+
+
+    const requiredDocuments = ['identificacion', 'comprobante de domicilio', 'comprobante de estado de cuenta'];
+    const userDocuments = user.documents.map(document => getFileNameWithoutExtension(document.name.toLowerCase()));
+
+    const documentsMissing = requiredDocuments.filter(document => !userDocuments.includes(document.toLowerCase()));
+  
+    if (documentsMissing.length > 0) {
+      // Faltan Documentos por Procesar
+      return res.status(400).json({ error: 'El usuario no ha terminado de procesar su documentación' });
+    }
+
+    user.rol = 'premium';
+    await user.save();
+
+    return res.json({ message: 'Usuario actualizado a premium correctamente' });
+
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Error en la actualización a premium' });
+  }
+};
+
+function getFileNameWithoutExtension(fileName) {
+  return fileName.replace(/\.[^/.]+$/, "");
+}

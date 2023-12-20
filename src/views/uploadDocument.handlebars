@@ -1,0 +1,20 @@
+<h1>Subir Archivos</h1>
+    <button style="border: none;  background: none;">
+                    <a class="btn btn-warning"style="border-radius: 85px; padding: 20px;" href="/api/sessions/profile">
+                         <i class="bi bi-person-circle"> Profile </i>
+                    </a>
+    </button>
+    
+    <form action="/api/users/{{uid}}/documents" method="POST" enctype="multipart/form-data" class="border p-3 form d-flex flex-column justify-content-center align-items-center">
+        <label for="fileType" class="form-label">Selecciona el Tipo de Archivo</label>
+        <select id="fileType"  class="form-select me-2" name="fileType" required >
+            <option value="profileImage">Imagen de Perfil</option>
+            <option value="productImage">Imagen de Producto</option>
+            <option value="document">Documentos</option>
+        </select>
+
+        <label for="file" class="my-2">Elige el Archivo:</label>
+        <input type="file" id="documents" class="form-control" name="documents"  required multiple>
+
+        <button type="submit" class="btn btn-warning mt-4 text-decoration-none">Subir Archivo</button>
+    </form>

@@ -9,7 +9,40 @@ async function getAllUsers(){
     {
         console.log("error getAllUsers: ", error)
     }
-
 }
 
-module.exports = { getAllUsers }
+  async function updateData(id, data){
+    try {
+        let result = await userModel.updateOne({_id: id}, {...data})
+        return result 
+    } catch (error) {
+        console.log( "error de Update Data: ",error)
+        
+    }
+}
+async function updateConnection(id, date){
+    try {
+        let result = await userModel.updateOne({_id: id}, {last_connection: date})
+        return result 
+    } catch (error) {
+        console.log( "error de Update Connection: ",error)
+        
+    }
+}
+
+async function deleteUser(uid){
+    try {
+        let result = await userModel.deleteOne({_id: uid})
+        return result
+    } catch (error) {
+        console.log( "error de delete User: ",error)
+    }
+}
+
+
+module.exports = { 
+    getAllUsers,
+    updateData,
+    updateConnection,
+    deleteUser,
+}

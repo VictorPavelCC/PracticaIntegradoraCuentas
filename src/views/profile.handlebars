@@ -19,7 +19,16 @@
 <div>
     <a style="text-decoration: none;" href="/api/users" ><button id="usersAdmin" class="btn btn-warning mt-3 mx-5 text-decoration-none" style="display: none;">Administrador de Roles</button></a>
 </div>
+<div>
+  <form method="GET" action="/api/users/premium/{{this._id}}"></form>
+    <button class="btn btn-primary mt-3 mx-5" id="premButton" onclick="toPremium('{{this._id}}','{{this.rol}}')">Actualizar a Premium</button>
+  </form>
+</div>
 
+<div>
+    <a href="/api/users/{{_id}}/documents" ><button id="Button" class="btn btn-warning mt-3 mx-5 text-decoration-none" >Subir Imagenes</button></a>
+</div>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     
@@ -32,5 +41,56 @@
       document.getElementById('usersAdmin').style.display = 'block';
 
     }
+    if (userRole === "premium"){
+      document.getElementById('premButton').style.display = 'none'
+    }
+
+
+    document.getElementById('premButton').addEventListener('click', function () {
+      toPremium('{{this._id}}', '{{this.rol}}');
+    });
+
   });
+
+function toPremium(id,rol){
+    const userId = id
+    const userRol = rol
+
+
+        fetch(`/api/users/premium/${userId}`, {
+                method: 'GET',
+            })
+        .then((res) => {
+          if (res.ok) {
+            Toastify({
+            text: "Usuario Actualizado a Premium",
+            gravity: "bottom",
+            position: "right",
+            style: {
+                background: "linear-gradient(to right, #66ff66, #33cc33)",
+            },duration: 1000
+            }).showToast();
+            console.log("El rol fue cambiado con exito");
+            setTimeout(() => {
+            window.location.href = '/api/sessions/logout';
+            }, 1500);
+          } else {
+            Toastify({
+                    text: "Falta Cargar Documentos",
+                    gravity: "bottom",
+                    position: "right",
+                    style: {
+                    background: "linear-gradient(to right, #ff6666, #cc3333)",
+            },
+            duration: 3000,
+            }).showToast();
+            console.error("Error al cambiar el rol");
+          }
+        })
+        .catch((error) => {
+          console.error("Error de red al cambiar el rol", error);
+        });
+}
+  
 </script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
