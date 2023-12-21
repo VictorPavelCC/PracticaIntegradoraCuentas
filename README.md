@@ -1,4 +1,6 @@
-# Practica Integradora
+# Integracion de Ecommerce
+Para que se aplique de manera correcta esta entrega crear un nuevo user
+
 
 **Victor Pavel Cuentas Calle**
 
@@ -55,3 +57,18 @@ Esta se ubica en la siguiente ruta : http://localhost:8080/apidocs/
 Debes iniciar sesion (Premium/Admin) para crear productos de lo contrario saldra acceso no autorizado
 
 ![DocumentacionSwagger](https://github.com/VictorPavelCC/PracticaIntegradoraCuentas/blob/main/src/img/DocumentacionSwagger.png?raw=true)
+
+
+## Subir Documentos
+
+Esta se ubica en la siguiente ruta : (http://localhost:8080/api/users/:uid/documents)
+los documentos que deben estar subidos son con el nombre de     'identificacion', 'comprobante de domicilio', 'comprobante de estado de cuenta'
+y debes loguearte para poder acceder a este apartado
+
+![SubirArchivos](https://github.com/VictorPavelCC/PracticaIntegradoraCuentas/blob/main/src/img/SubirArchivos.png?raw=true)
+
+## Convertirse en Premium (user)
+
+para convertirse en premium debes darle al boton de Actualizar a premium, luego de eso te envia devuelta al login y luego ya no se ve el boton por que solo se ve si tienes el nivel user
+
+![toPremium](https://github.com/VictorPavelCC/PracticaIntegradoraCuentas/blob/main/src/img/toPremium.png?raw=true)
