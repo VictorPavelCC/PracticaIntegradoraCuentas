@@ -62,7 +62,7 @@ Debes iniciar sesion (Premium/Admin) para crear productos de lo contrario saldra
 ## Subir Documentos
 
 Esta se ubica en la siguiente ruta : (http://localhost:8080/api/users/:uid/documents)
-los documentos que deben estar subidos son con el nombre de     'identificacion', 'comprobante de domicilio', 'comprobante de estado de cuenta'
+los documentos que deben estar subidos son con el nombre de (sin acentos) 'identificacion', 'comprobante de domicilio', 'comprobante de estado de cuenta'
 y debes loguearte para poder acceder a este apartado
 
 ![SubirArchivos](https://github.com/VictorPavelCC/PracticaIntegradoraCuentas/blob/main/src/img/SubirArchivos.png?raw=true)
