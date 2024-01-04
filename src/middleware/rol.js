@@ -1,6 +1,7 @@
 //Verificacion de Admin
 function isAdmin(req, res, next) {
-    if (req.user && req.user.rol === 'Admin') {
+
+    if (req.user && req.user.rol === "Admin" ) {
       next();
     } else {
       return res.status(403).json({ error: 'Acceso no autorizado, No es Admin' });

@@ -201,21 +201,23 @@ exports.sendRecoverMail = async (req, res) => {
 }
 
 
-async function sendEmail(mailOptions) {
+
+exports.sendEmail = async (mailOptions) => {
     const transporter = nodemailer.createTransport({
-      
-      service: 'gmail',
-      auth: {
-        user: 'pavelcuentas@gmail.com', // Coloca tu dirección de correo aquí
-        pass: 'fbvv jzcg ismp fkts',      // Coloca tu contraseña aquí
-      },
+        service: 'gmail',
+        auth: {
+            user: 'pavelcuentas@gmail.com', // Coloca tu dirección de correo aquí
+            pass: 'fbvv jzcg ismp fkts',      // Coloca tu contraseña aquí
+        },
     });
-  
+
     try {
-      const info = await transporter.sendMail(mailOptions);
-      console.log('Correo electrónico enviado:', info);
+        const info = await transporter.sendMail(mailOptions);
+        console.log('Correo electrónico enviado:', info);
+        return info;  // Retorna la información del envío si es necesario
     } catch (error) {
-      console.error('Error al enviar el correo electrónico:', error);
-      res.status(500).send('Error al enviar el correo electrónico sendemail: ',error);
+        console.error('Error al enviar el correo electrónico:', error);
+        res.status(500).send('Error al enviar el correo electrónico sendemail: ',error);
+        //throw error;  // Lanza el error para manejarlo en el controlador que llama a esta función
     }
-}
+};

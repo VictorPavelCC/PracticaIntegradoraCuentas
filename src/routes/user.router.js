@@ -12,5 +12,8 @@ router.get('/:uid/documents/', userController.renderUploadDocument);
 
 router.post("/:uid/documents",upload.array('documents'),userController.uploadDocument)
 
+router.delete("/", isAdmin, userController.deleteUsers)
+
+router.get("/changeConnection/:id", userController.changeLastConnection)
 
 module.exports = router;

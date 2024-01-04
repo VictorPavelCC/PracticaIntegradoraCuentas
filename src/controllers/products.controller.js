@@ -2,6 +2,8 @@ const { productModel } = require("../dao/models/product.model");
 const { cartModel } = require("../dao/models/cart.model");
 const productsDao = require("../dao/productsDao");
 const { paginate } = require("mongoose-paginate-v2");
+const sessionDao = require("../dao/sessionsDao")
+const sessionController = require("./sessions.controller")
 
 
 exports.getAllProducts = async (req, res) => {
@@ -130,6 +132,21 @@ exports.deleteProduct = async (req, res) => {
     let product = await productsDao.getProductById(id)
     if(!product) {res.send({ status: "error", error: "El Producto no existe" });}
     if(! product.owner == req.session.user._id) return res.status(403).json({ error: 'No tienes permisos sobre este producto.' })
+    
+    let user = await  sessionDao.findUserById(product.owner)
+
+
+
+    const mailOptions = {
+      to: user.email,
+      subject: 'Producto Eliminado',
+      html: `<p>Hola <b>${user.first_name} ${user.last_name}</b>,</p>
+      Tu producto fue eliminado por el administrador`,
+    };
+
+
+    let send = await sessionController.sendEmail(mailOptions);
+
 
     let eliminar = productsDao.deleteProduct(id);
 

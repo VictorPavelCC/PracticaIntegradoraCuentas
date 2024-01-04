@@ -1,3 +1,4 @@
+<h2 >Lista de Usuarios</h2>
 <div class="container mt-5 " >
     <div style="display:flex; align-items:center;">
         <button style="border: none;  background: none; padding:2px; margin-right:12px;">
@@ -5,8 +6,11 @@
                          <i class="bi bi-person-circle"></i> Profile
                     </a>
         </button>
-        <h2 >Lista de Usuarios</h2>
-        
+        <button style="border: none;  background: none; padding:2px; margin-right:12px;">
+                    <a class="btn btn-danger"style="border-radius: 85px; padding: 20px;" onclick="DeleteUsers()">
+                         <i class="bi bi-person-dash"></i> Eliminar Users Inactivos
+                    </a>
+        </button>
     </div>
 
 <table class="table">
@@ -34,7 +38,7 @@
 
                 </td>
                 <td>
-                <a class="btn btn-danger" href="/api/users/premiums/{{this._id}}">pagina</a>
+                <a class="btn btn-danger" id="{{this._id}}" rol="{{this.rol}}" >Delete</a>
                 </td>
             </tr>
         {{/each}}
@@ -88,5 +92,31 @@ if (userRol === "Admin" ) {
 
 }
 }
+
+function DeleteUsers(){
+    fetch(`/api/users/`, {
+                method: 'DELETE',
+            })
+        .then((res) => {
+          if (res.ok) {
+            Toastify({
+            text: "Users AFK Eliminados",
+            gravity: "bottom",
+            position: "right",
+            style: {
+                background: "linear-gradient(to right, #66ff66, #33cc33)",
+            },duration: 1000
+            }).showToast();
+            console.log("Users AFK Eliminado");
+            location.reload();
+          } else {
+            console.error("Error al eliminar users AFK");
+          }
+        })
+        .catch((error) => {
+          console.error("Error al eliminar users", error);
+        });
+}
+
 
 </script>

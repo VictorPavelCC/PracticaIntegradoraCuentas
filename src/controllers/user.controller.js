@@ -1,5 +1,6 @@
 const sessionsDao = require("../dao/sessionsDao")
-const userModel = require("../dao/models/user.model")
+const { userModel } = require("../dao/models/user.model")
+const sessionsController = require("../controllers/sessions.controller")
 const usersDao = require("../dao/userDao")
 
 
@@ -127,4 +128,77 @@ exports.UserToPremium = async (req, res) => {
 
 function getFileNameWithoutExtension(fileName) {
   return fileName.replace(/\.[^/.]+$/, "");
+}
+
+
+exports.deleteUsers = async (req, res) => {
+  //const userId = req.params.uid
+  //eliminar Usuario
+  try {
+    let fechaLimite = new Date();
+    //let fechaNow = new Date()
+
+    fechaLimite.setDate(fechaLimite.getDate() - 2);
+
+    const UserInactivos = await userModel.find({ last_connection: { $lt: fechaLimite } });
+    
+    for (const user of UserInactivos) {
+      
+      
+      
+    //let user = await sessionsDao.findUserById(userId)
+    console.log("el user a eliminar es:" , user)
+    
+    const mailOptions = {
+      to: user.email,
+      subject: 'Cuenta Eliminada',
+      html: `<p>Hola <b>${user.first_name} ${user.last_name}</b>,</p>
+      Se ha eliminado tu cuenta por inactividad.`,
+    };
+
+
+    let send = await sessionsController.sendEmail(mailOptions);
+    console.log("email Enviado", send)
+    
+    // Elimina al usuario
+    if(user.rol == "user" || user.rol == "premium"){
+    await userModel.deleteOne({ _id: user._id }); 
+  }
+
+    }
+
+    res.json({ message: 'Usuario eliminado correctamente' });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Error al Eliminar Usuario en Controller' });
+  
+  }
+
+}
+
+exports.changeLastConnection = async (req, res) => {
+    let userId = req.params.id
+  try {
+    //cambia last_connection a 3 dias antes de la fecha actual
+    let FechaActual = new Date();
+
+    let NuevaFecha = new Date(FechaActual);
+    NuevaFecha.setDate(FechaActual.getDate() - 3);
+
+    let result =  await userModel.updateOne({_id: userId}, {last_connection: NuevaFecha})
+
+    if (result) {
+      // La actualización fue exitosa
+      return res.json({ message: 'Last connection actualizada correctamente' });
+    } else {
+      // No se pudo actualizar, el usuario no existe
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+
+
+  } catch (error) {
+     console.error(error);
+    return res.status(500).json({ error: 'Error al actualizar last_connection' });
+  }
+
 }

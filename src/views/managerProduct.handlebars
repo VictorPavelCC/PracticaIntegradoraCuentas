@@ -20,7 +20,7 @@
       <img id="productImage" src="{{payload._doc.image}}" alt="{{payload._doc.name}}" class="product-image" />
       <p class="mt-3 w-100">
         <strong>URL Imagen:</strong>
-        <input type="text" id="productImageUrl" value="{{payload._doc.image_url}}" class="form-control mb-2"
+        <input type="text" id="productImageUrl" value="{{payload._doc.image}}" class="form-control mb-2"
           placeholder="URL de la Imagen">
       </p>
       <button type="button" class="btn btn-primary w-100" onclick="applyChanges()">Cargar Imagen</button>

@@ -6,6 +6,7 @@ const ticketDao = require("../dao/ticketDao")
 const nodemailer = require("nodemailer")
 const { CustomError } = require("../services/errors/CustomError")
 const { CartErrorParams } = require("../services/errors/cartErrorNotExist")
+const { sendEmail } = require("./sessions.controller")
 
 
 exports.createCart = async (req, res) => {
@@ -174,44 +175,16 @@ exports.createCart = async (req, res) => {
     
       //Mail
 
-      /* const transport = nodemailer.createTransport({
-        service: 'Gmail',
-        auth: {
-          user: 'pavelcuentas@gmail.com',
-          pass: 'tuContraseña',
-        },
-      });
-
       const mailOptions = {
-        from: 'E-commerce',
-        to: 'pavelcuentas@gmail.com',
-        subject: 'Tu compra',
-        text: 'Hola',mail
+        to: req.user.email,
+        subject: 'Cuenta Eliminada',
+        html: `<p>Hola <b>${req.user.first_name} ${req.user.last_name}</b>,</p>
+        <img src="https://www.compudemano.com/wp-content/uploads/2019/01/gracias-por-tu-compra.jpg" style="width:250px"/>
+      <p>Gracias por usar nuestros servicios</p>`,
       };
-      console.log("llego0")
-      let mail =`
-      <div>
-      <h1>Hola!!</h1>
-      <img src="https://www.compudemano.com/wp-content/uploads/2019/01/gracias-por-tu-compra.jpg" style="width:250px"/>
-      <p>Gracias por usar nuestros servicios</p>
-      <a href="https://www.google.com/">Pagina Principal</a>
-      </div>
-      
-      `
-      console.log("llego1")
-      const sendEmail = await transport.sendMail({
-        from: 'Backend Purchase',
-        //req.user.email
-        to: 'pavelcuentas@gmail.com',
-        subject: 'Purcharse',
-        mail
-      })
-      if (!sendEmail) return res.send({ status: 'error', error: 'email not sent' })
-      console.log("llego2")
-      
- */
 
-      console.log("productos compra",productsToPurchase)
+      await sendEmail(mailOptions)
+
       res.render("ticket", {
         status: "success",
         ticket: ticketData,
