@@ -130,7 +130,7 @@ exports.login = async (req, res) => {
 };
 
 exports.failLogin = (req, res) => {
-    res.send({ error: "Failed login" });
+    res.redirect("/api/sessions")
 };
 
 exports.githubAuth = async (req, res) => {}
