@@ -69,7 +69,7 @@ if (userRol === "Admin" ) {
             }).showToast();
             }else{ 
     
-        fetch(`/api/users/premium/${userId}`, {
+        fetch(`/api/users/premiums/${userId}`, {
                 method: 'GET',
             })
         .then((res) => {
