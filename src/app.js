@@ -31,10 +31,7 @@ app.listen(PORT, () => {
 })
 
 
-mongoose.connect(config.mongoUrl, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-})
+mongoose.connect(config.mongoUrl)
 .then(() => {
     logger.info("Connected to Mongo Atlas DB");
   })
@@ -45,7 +42,6 @@ mongoose.connect(config.mongoUrl, {
 app.use(session({
     store: MongoStore.create({
         mongoUrl: config.mongoUrl,
-        mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
         ttl: 1000
     }),
     secret: config.privateKey,
