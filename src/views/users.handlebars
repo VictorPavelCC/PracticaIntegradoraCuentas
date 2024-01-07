@@ -36,6 +36,7 @@
                 <td> {{this.rol}}</td>
                 <td> {{this.last_connection_formatted}} </td>
                 <td>
+                  
                     <button class="btn btn-warning" id="{{this._id}}" rol="{{this.rol}}" onclick="changeRol('{{this._id}}','{{this.rol}}')">Cambiar Rol a User / Premium</button></a>
 
                 </td>
@@ -120,7 +121,20 @@ function DeleteUsers(){
         });
 }
 
-function DeleteUser(uid){
+function DeleteUser(uid, rol){
+  const userRol = rol
+if (userRol === "Admin" ) {             
+            Toastify({
+                    text: "No se puede eliminar directamente una cuenta con rol de Administrador",
+                    gravity: "bottom",
+                    position: "right",
+                    style: {
+                    background: "linear-gradient(to right, #ff6666, #cc3333)",
+            },
+            duration: 3000,
+            }).showToast();
+            }else{ 
+
     fetch(`/api/users/${uid}`, {
                 method: 'DELETE',
             })
@@ -132,7 +146,7 @@ function DeleteUser(uid){
             position: "right",
             style: {
                 background: "linear-gradient(to right, #66ff66, #33cc33)",
-            },duration: 1000
+            },duration: 3000
             }).showToast();
             console.log("User Eliminado");
             location.reload();
@@ -144,6 +158,6 @@ function DeleteUser(uid){
           console.error("Error al eliminar users", error);
         });
 }
-
+}
 
 </script>

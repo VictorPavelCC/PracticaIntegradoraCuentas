@@ -169,13 +169,11 @@ exports.deleteUser = async (req, res) => {
       html: `<p>Hola <b>${user.first_name} ${user.last_name}</b>,</p>
       Se ha eliminado tu cuenta.`,
     };
-
-
-    let send = await sessionsController.sendEmail(mailOptions);
-    console.log("email Enviado", send)
     
     // Elimina al usuario
     if(user.rol == "user" || user.rol == "premium"){
+    let send = await sessionsController.sendEmail(mailOptions);
+    console.log("email Enviado", send)
     const result = await usersDao.deleteUser(userId)
     res.json({ message: 'Usuario eliminado correctamente' });
   } else {
