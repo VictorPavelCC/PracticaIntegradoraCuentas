@@ -19,7 +19,7 @@ const swaggerUiExpress = require('swagger-ui-express')
 
 
 const app = express()
-const PORT = 8080
+const PORT = process.env.PORT || 8080
 
 app.engine("handlebars", handlebars.engine())
 app.set("views", path.join(__dirname, 'views'))
