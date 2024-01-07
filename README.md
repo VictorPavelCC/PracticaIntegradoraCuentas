@@ -1,5 +1,5 @@
-# Integracion de Ecommerce
-Para que se aplique de manera correcta esta entrega crear un nuevo user
+# Entrega Final de Ecommerce
+
 
 
 **Victor Pavel Cuentas Calle**
@@ -21,10 +21,6 @@ luego te envia a profile para ver tu perfil
 
 ![Cart](https://github.com/VictorPavelCC/PracticaIntegradoraCuentas/blob/main/src/img/cart.png?raw=true)
 
-## Mock
-La ruta (http://localhost:8080/api/mockingproducts/) creara 100 productos y los devuelve en forma de json
-![Mock](https://github.com/VictorPavelCC/PracticaIntegradoraCuentas/blob/main/src/img/mockingProducts.png?raw=true)
-
 ## Admin
 Se puede acceder desde profile a todas las rutas para modificar productos y rol de usuarios
 ![profileAdmin](https://github.com/VictorPavelCC/PracticaIntegradoraCuentas/blob/main/src/img/ProfileAdmin.png?raw=true)
@@ -45,19 +41,9 @@ Para eliminar productos basta con solo presionar el boton rojo en esta pagina
 
 ## Rol Manager
 
-Aunque no se pida hice una pagina para el cambio de roles, basicamente hace lo mismo que pide la entrega y se actuliza la pagina  al cambiar el rol del usuario,
-ademas tambien conserve el acceso a la pagina que corresponde a la forma de la entrega (http://localhost:8080/api/users/premium/:uid) presionando el boton pagina se accede a ella
+Actualiza el rol del usuario de premium a user y viceversa
 
 ![UserManager](https://github.com/VictorPavelCC/PracticaIntegradoraCuentas/blob/main/src/img/UserManager.png?raw=true)
-
-
-## Documentacion de API (Swagger)
-
-Esta se ubica en la siguiente ruta : http://localhost:8080/apidocs/
-Debes iniciar sesion (Premium/Admin) para crear productos de lo contrario saldra acceso no autorizado
-
-![DocumentacionSwagger](https://github.com/VictorPavelCC/PracticaIntegradoraCuentas/blob/main/src/img/DocumentacionSwagger.png?raw=true)
-
 
 ## Subir Documentos
 
@@ -67,8 +53,15 @@ y debes loguearte para poder acceder a este apartado
 
 ![SubirArchivos](https://github.com/VictorPavelCC/PracticaIntegradoraCuentas/blob/main/src/img/SubirArchivos.png?raw=true)
 
+## Mi Documentacion(user)
+
+puedes verificar la documentacion subida por ti en este apartado
+![Documentacion](https://github.com/VictorPavelCC/PracticaIntegradoraCuentas/blob/main/src/img/Documentacion.png?raw=true)
+
+
+
 ## Convertirse en Premium (user)
 
-para convertirse en premium debes darle al boton de Actualizar a premium, luego de eso te envia devuelta al login y luego ya no se ve el boton por que solo se ve si tienes el nivel user
+Para convertirse en premium debes darle al boton de Actualizar a premium, luego de eso te envia devuelta al login y luego ya no se ve el boton por que solo se ve si tienes el nivel user
 
 ![toPremium](https://github.com/VictorPavelCC/PracticaIntegradoraCuentas/blob/main/src/img/toPremium.png?raw=true)
