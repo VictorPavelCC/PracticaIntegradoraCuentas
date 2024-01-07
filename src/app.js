@@ -76,6 +76,7 @@ const swaggerOptions = {
 const specs = swaggerJsDoc(swaggerOptions)
 app.use('/apidocs',swaggerUiExpress.serve, swaggerUiExpress.setup(specs))
 
+app.use("/", sessionRouter)
 app.use("/api/sessions/", sessionRouter)
 app.use("/api/products", productRouter);
 app.use("/api/carts", cartRouter);  
