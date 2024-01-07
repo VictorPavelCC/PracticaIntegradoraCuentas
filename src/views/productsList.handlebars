@@ -64,8 +64,8 @@
                     </td>
                     
                     <td>
-                        <button class="btn" onclick="addToCart(this,'{{this._doc.owner}}')" id="{{this._doc._id}}">
-                            <i class="bi bi-cart-fill"></i>
+                        <button class="btn" onclick="addToCart(this,'{{this._doc.owner}}')" id="{{this._doc._id}}" style="background-color: orange;">
+                            <i class="bi bi-cart-plus-fill"></i>
                         </button>
                     </td>
                 </tr>
@@ -136,10 +136,10 @@
                 if (CategSELECT === 'Todas') {
                     const Url = new URL(window.location.href);
 
-                    Url.searchParams.delete('query');
+                    Url.searchParams.delete('category');
                     window.location.href = Url.toString();
                 } else {
-                    window.location.href = `?query=${CategSELECT}`
+                    window.location.href = `?category=${CategSELECT}`
                 }
             });
         });

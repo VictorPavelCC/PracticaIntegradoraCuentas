@@ -8,6 +8,7 @@ async function getAllProducts(query, options) {
 
 async function getProductList(query, options, sessionUser) {
   const userCartID = sessionUser._id;
+  
   const userCart = await cartModel.findOne({ user: userCartID });
 
   const cid = userCart._id.toString();
@@ -51,6 +52,12 @@ async function getProductById(id) {
   return product;
 }
 
+
+async function getPaginate(query,options) {
+  const result = await productModel.paginate(query, options);
+  return { result };
+}
+
 async function getProductsByCategory() {
   const categories = await productModel.distinct("category");
   return { categories };
@@ -73,11 +80,13 @@ async function deleteProduct(id) {
   return { result: "success", payload: result };
 }
 
+
 module.exports = {
   getAllProducts,
   getProductList,
   getProductById,
   getProductsByCategory,
+  getPaginate,
   postProduct,
   putProduct,
   deleteProduct,

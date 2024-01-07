@@ -4,6 +4,7 @@ const productsDao = require("../dao/productsDao");
 const { paginate } = require("mongoose-paginate-v2");
 const sessionDao = require("../dao/sessionsDao")
 const sessionController = require("./sessions.controller")
+const userDao = require("../dao/userDao")
 
 
 exports.getAllProducts = async (req, res) => {
@@ -50,17 +51,19 @@ exports.getAllProducts = async (req, res) => {
     page = parseInt(page, 10) || 1;
     sort = sort === "asc" ? { price: 1 } : sort === "desc" ? { price: -1 } : {};
 
-    const query = category ? { category } : {};
+    const query = category && category !== "Todas" ? { category } : {};
+
     const options = { limit, page, sort };
 
     const sessionUser = req.session.user;
 
+
     let result = await productsDao.getProductList(query, options, sessionUser);
+
+    result.selectedCategory = category || "Todas";
     res.render("productsList", result);
   } catch (error) {
-    res.render("productsList", {
-      status: "error",
-    });
+    console.log(error)
   }
 };
 
@@ -171,34 +174,38 @@ exports.getManagerProducts = async (req, res) =>{
     const query = category ? { category } : {};
     const options = { limit, page, sort };
 
-    //separar a Dao Products
-    let products = await productModel.paginate(query, options);
-   
+    //separar a Dao Products  HECHO
+    let products = await productsDao.getPaginate(query, options);
+    const sessionUser = req.session.user
+    let uid = req.session.user._id
 
     const pageNumbers = [];
-    for (let i = 1; i <= products.totalPages; i++) {
-      pageNumbers.push({ number: i, current: i === products.page });
+    for (let i = 1; i <= products.result.totalPages; i++) {
+      pageNumbers.push({ number: i, current: i === products.result.page });
     }
     let categories;
 
-    //separar a Dao Products
-    const result = await productModel.distinct("category");
-    categories = result;
+    //separar a Dao Products  HECHO
+    const result = await productsDao.getProductsByCategory()
+    categories = result.categories;
     categories.push("Todas");
+
+ 
 
     res.render("managerProducts", {
         status: "success",
-        payload: products.docs,
-        totalPages: products.totalPages,
-        prevPage: products.prevPage,
-        nextPage: products.nextPage,
-        page: products.page,
-        hasPrevPage: products.hasPrevPage,
-        hasNextPage: products.hasNextPage,
+        payload: products.result.docs,
+        totalPages: products.result.totalPages,
+        prevPage: products.result.prevPage,
+        nextPage: products.result.nextPage,
+        page: products.result.page,
+        hasPrevPage: products.result.hasPrevPage,
+        hasNextPage: products.result.hasNextPage,
         pageNumbers: pageNumbers,
         categories: categories,
-        //cart,
-        //user: req.session.user,
+        user: sessionUser,
+        userID: uid
+        
       });
 
   } catch (error){
@@ -210,8 +217,15 @@ exports.getManagerProducts = async (req, res) =>{
 exports.getCreateProduct = async (req, res) => {
   try {
     const sessionUser = req.session.user;
-    //console.log("usuario: ", sessionUser)
-    res.render("createProduct");
+    const userImages = await userDao.getFiles(req.session.user._id)
+
+
+    res.render("createProduct",{
+      status: "success",
+      user: sessionUser,
+      productImages: userImages,
+      selectedProductImage: null
+    });
   } catch (error) {
     res.status({status: error,
     });
@@ -255,6 +269,7 @@ exports.getManagerProduct = async (req, res) =>{
     try{
       const product = await productsDao.getProductById(pid)
       const UserId = req.session.user._id
+      const userRole = req.session.user.rol
 
       //Si no es admin es Premium
       if(req.session.user.rol != "Admin"){ 
@@ -264,6 +279,7 @@ exports.getManagerProduct = async (req, res) =>{
 
       res.render("managerProduct", {
       payload: product,
+      userRole: userRole,
     });
       
 

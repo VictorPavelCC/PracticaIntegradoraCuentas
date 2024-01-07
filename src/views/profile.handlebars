@@ -1,3 +1,5 @@
+
+<div class="position-absolute top-50 start-50 translate-middle">
 <form method="get" action="/api/sessions/logout" style="display: flex;
     align-items: center;
     flex-direction: column;
@@ -9,25 +11,26 @@
     <p>Edad: {{age}}</p>
     <button type="submit" class="btn btn-danger">Logout</button>
 </form>
-<div>
+<div class="d-flex justify-content-center">
     <a style="text-decoration: none;" href="/api/products/productsList" ><button id="userButton"class="btn btn-primary mt-3 mx-5">Ir a la Tienda</button></a>
 </div>
 
-<div>
+<div class="d-flex justify-content-center">
     <a style="text-decoration: none;" href="/api/products/manager" ><button id="productsAdmin" class="btn btn-success mt-3 mx-5 text-decoration-none" style="display: none;">Administrador de Productos</button></a>
 </div>
-<div>
+<div class="d-flex justify-content-center">
     <a style="text-decoration: none;" href="/api/users" ><button id="usersAdmin" class="btn btn-warning mt-3 mx-5 text-decoration-none" style="display: none;">Administrador de Roles</button></a>
 </div>
-<div>
-  <form method="GET" action="/api/users/premium/{{this._id}}"></form>
+<div class="d-flex justify-content-center">
     <button class="btn btn-primary mt-3 mx-5" id="premButton" onclick="toPremium('{{this._id}}','{{this.rol}}')">Actualizar a Premium</button>
-  </form>
 </div>
-
-<div>
+<div class="d-flex justify-content-center">
+    <a href="/api/users/myDocuments" ><button id="Button" class="btn btn-warning mt-3 mx-5 text-decoration-none" >Mis Documentos</button></a>
+</div>
+<div class="d-flex justify-content-center">
     <a href="/api/users/{{_id}}/documents" ><button id="Button" class="btn btn-warning mt-3 mx-5 text-decoration-none" >Subir Imagenes</button></a>
 </div>
+ </div>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function () {
@@ -39,6 +42,7 @@
       document.getElementById('userButton').style.display = 'none';
       document.getElementById('productsAdmin').style.display = 'block';
       document.getElementById('usersAdmin').style.display = 'block';
+      document.getElementById('premButton').style.display = 'none';
 
     }
     if (userRole === "premium"){
@@ -82,7 +86,7 @@ function toPremium(id,rol){
                     style: {
                     background: "linear-gradient(to right, #ff6666, #cc3333)",
             },
-            duration: 3000,
+            duration: 1000,
             }).showToast();
             console.error("Error al cambiar el rol");
           }

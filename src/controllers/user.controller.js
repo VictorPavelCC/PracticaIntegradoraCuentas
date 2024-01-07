@@ -8,14 +8,25 @@ exports.renderUsers = async (req, res) => {
   try {
 
       const users = await usersDao.getAllUsers();
-      const usersData = users.map(user => user.toObject())
-      res.render("users", {users: usersData})
+      const usersData = users.map((user) => {
+        return {
+          ...user.toObject(),
+          last_connection_formatted: formatDate(user.last_connection), // Formatear la fecha si es necesario
+        };
+      })
+      res.render("users", { users: usersData });
   } catch (error) {
     console.log(error)
       res.status(500).send("Error de render")
   }
 };
-
+function formatDate(date) {
+  if (date) {
+    return date.toLocaleString(); // Puedes usar bibliotecas como moment.js para un formato más avanzado
+  } else {
+    return 'N/A'; // O cualquier valor predeterminado que desees mostrar si la fecha no está definida
+  }
+}
 exports.renderUploadDocument = async (req, res) => {
   const uid = req.params.uid;
   res.render('uploadDocument', { uid });
@@ -126,34 +137,37 @@ exports.UserToPremium = async (req, res) => {
   }
 };
 
+//Funcion que quita la extension del archivo
 function getFileNameWithoutExtension(fileName) {
   return fileName.replace(/\.[^/.]+$/, "");
 }
 
 
 exports.deleteUsers = async (req, res) => {
-  //const userId = req.params.uid
-  //eliminar Usuario
+
   try {
-    let fechaLimite = new Date();
-    //let fechaNow = new Date()
+    const result = await usersDao.deleteInactiveUsers()
 
-    fechaLimite.setDate(fechaLimite.getDate() - 2);
+      return res.json({ message: result.message });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Error al Eliminar Usuario en Controller' });
+  
+  }
 
-    const UserInactivos = await userModel.find({ last_connection: { $lt: fechaLimite } });
-    
-    for (const user of UserInactivos) {
-      
-      
-      
-    //let user = await sessionsDao.findUserById(userId)
-    console.log("el user a eliminar es:" , user)
+}
+
+exports.deleteUser = async (req, res) => {
+  let userId = req.params.uid
+  //eliminar Usuario
+  try {   
+    let user = await sessionsDao.findUserById(userId)
     
     const mailOptions = {
       to: user.email,
       subject: 'Cuenta Eliminada',
       html: `<p>Hola <b>${user.first_name} ${user.last_name}</b>,</p>
-      Se ha eliminado tu cuenta por inactividad.`,
+      Se ha eliminado tu cuenta.`,
     };
 
 
@@ -162,12 +176,15 @@ exports.deleteUsers = async (req, res) => {
     
     // Elimina al usuario
     if(user.rol == "user" || user.rol == "premium"){
-    await userModel.deleteOne({ _id: user._id }); 
+    const result = await usersDao.deleteUser(userId)
+    res.json({ message: 'Usuario eliminado correctamente' });
+  } else {
+    res.json({ message: 'Este Usuario no se puede Eliminar' });
   }
 
-    }
+    
 
-    res.json({ message: 'Usuario eliminado correctamente' });
+    
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: 'Error al Eliminar Usuario en Controller' });
@@ -175,6 +192,32 @@ exports.deleteUsers = async (req, res) => {
   }
 
 }
+
+exports.getDocumentList = async (req, res) => {
+  try {
+      const userId = req.session.user._id; // Ajusta la obtención del ID según tu estructura
+      const user = await usersDao.findUserById(userId)
+
+      if (!user) {
+        return res.status(404).send('Usuario no encontrado');
+    }
+
+    const documents = user.documents.map(document => {
+        const fileNameMatch = document.reference.match(/\\([^\\]+)$/);
+        const fileName = fileNameMatch ? fileNameMatch[1] : null;
+        const fileType = document.reference.includes('public\\documents') ? 'Document' :
+                        document.reference.includes('public\\products') ? 'Product' :
+                        document.reference.includes('public\\profile') ? 'Profile' : 'Unknown';
+        return { fileName, fileType };
+    }).filter(file => file.fileName !== null);
+
+    res.render('myDocuments', { documents });
+} catch (error) {
+    console.error('Error al obtener la lista de documentos:', error);
+    res.status(500).send('Error interno del servidor');
+}
+};
+
 
 exports.changeLastConnection = async (req, res) => {
     let userId = req.params.id
@@ -184,8 +227,10 @@ exports.changeLastConnection = async (req, res) => {
 
     let NuevaFecha = new Date(FechaActual);
     NuevaFecha.setDate(FechaActual.getDate() - 3);
-
-    let result =  await userModel.updateOne({_id: userId}, {last_connection: NuevaFecha})
+    //
+    //Separar al Dao de User
+    //userModel.updateOne({_id: userId}, {last_connection: NuevaFecha})
+    let result =  await usersDao.updateData({_id:userId}, {last_connection: NuevaFecha})
 
     if (result) {
       // La actualización fue exitosa

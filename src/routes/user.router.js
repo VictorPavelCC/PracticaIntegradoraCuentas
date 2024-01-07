@@ -9,10 +9,12 @@ router.get("/premiums/:id", isAdmin,userController.ChangeRol);
 router.get("/premium/:uid", userController.UserToPremium);
 router.get("/",isAdmin,userController.renderUsers);
 router.get('/:uid/documents/', userController.renderUploadDocument);
+router.get('/myDocuments', userController.getDocumentList);
 
 router.post("/:uid/documents",upload.array('documents'),userController.uploadDocument)
 
 router.delete("/", isAdmin, userController.deleteUsers)
+router.delete("/:uid", isAdmin, userController.deleteUser)
 
 router.get("/changeConnection/:id", userController.changeLastConnection)
 

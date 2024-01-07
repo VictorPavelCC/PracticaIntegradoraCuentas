@@ -148,28 +148,28 @@
 
             priceHeader.addEventListener("click", function () {
  
-                const currentUrl = new URL(window.location.href);
-                const queryParams = new URLSearchParams(currentUrl.search);
+                const Url = new URL(window.location.href);
+                const queryParams = new URLSearchParams(Url.search);
                 const currentSort = queryParams.get("sort");
 
                 const Sort = currentSort === "asc" ? "desc" : "asc";
 
                 queryParams.set("sort", Sort);
-                currentUrl.search = queryParams.toString();
-                window.location.href = currentUrl.toString();
+                Url.search = queryParams.toString();
+                window.location.href = Url.toString();
             });
 
 
-            searchButton.addEventListener("click", function () {
+            search.addEventListener("click", function () {
                 const CategSELECT = categorySelect.value;
 
                 if (CategSELECT === 'Todas') {
-                    const currentUrl = new URL(window.location.href);
+                    const Url = new URL(window.location.href);
 
-                    currentUrl.searchParams.delete('query');
-                    window.location.href = currentUrl.toString();
+                    Url.searchParams.delete('category');
+                    window.location.href = Url.toString();
                 } else {
-                    window.location.href = `?query=${CategSELECT}`
+                    window.location.href = `?category=${CategSELECT}`
                 }
             });
         });

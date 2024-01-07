@@ -1,0 +1,39 @@
+<h1>Documentación del Usuario</h1>
+<div class="container mt-5 " >
+    <div style="display:flex; align-items:center;">
+            <button style="border: none;  background: none; padding:2px; margin-right:12px;">
+                <a class="btn btn-warning" style="border-radius: 85px; padding: 20px;" href="/api/sessions/profile">
+                    <i class="bi bi-person-circle"></i> Profile
+                </a>
+            </button> 
+    </div>
+<h4>En caso de que quieras ser usuario premium los archivos deben tener el nombre de:</h4>
+<p>Comprobante de Estado de Cuenta, Identificacion, Comprobante de Domicilio</p>
+    
+    <table class="table">
+            <thead>
+                <tr>
+                    <th style="font-size: 20px;">Nombre del Archivo</th>
+                    <th style="font-size: 20px;">Tipo de Archivo</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#if documents.length}}
+                    {{#each documents}}
+                        <tr>
+                            <td>
+                                <p class="text-decoration-none text-dark" style="font-weight: bold; font-size: 1rem; font-family: 'Arial', sans-serif;">
+                                    {{this.fileName}}
+                                </p>
+                            </td>
+                            <td>
+                                {{this.fileType}}
+                            </td>
+                        </tr>
+                    {{/each}}
+                {{else}}
+                <p>No se ha subido ninguna documentación.</p>
+                {{/if}}
+            </tbody>
+    </table>
+</div>

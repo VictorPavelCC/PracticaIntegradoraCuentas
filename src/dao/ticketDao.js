@@ -8,8 +8,10 @@ async function createTicket(ticketData) {
     try {
       const ticket = new ticketModel(ticketData);
       await ticket.save();
+      
       return ticket;
     } catch (error) {
+      console.log("error de ticket: ",error)
       throw new Error('Error al crear el ticket');
     }
   }

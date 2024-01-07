@@ -30,10 +30,12 @@ const initializePassport = () => {
                     last_name,
                     email,
                     age,
+                    
                     password: createHash(password),
                     cart:newCart._id,
                     documents: [ ],
                     last_connection: new Date(),
+                    
                 }
 
 

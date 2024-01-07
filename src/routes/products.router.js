@@ -4,9 +4,9 @@ const {isAdmin , isPremium, noAdmin} = require("../middleware/rol")
 const router = Router();
 
 
-
-router.get("/", productsController.getAllProducts);
 router.get("/productsList", productsController.getProductList);
+router.get("/", productsController.getAllProducts);
+
 
 
 router.get("/manager",isAdmin,productsController.getManagerProducts);

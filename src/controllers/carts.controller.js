@@ -45,16 +45,17 @@ exports.createCart = async (req, res) => {
         });
       }
       //antes
-      //const resume = cart.products.map(async (p)
+      
     const resume = await Promise.all(cart.products.map(async (p) => {
       const data = {};
+      //Mover al Dao
       data.info = await productModel.findById(p.product);
       data.quantity = p.quantity;
       data.total = data.info.price * p.quantity;
       
       return data;
     }));
-    //const products = await Promise.all(resume);
+    
   
     let total = 0;
     
@@ -138,6 +139,7 @@ exports.createCart = async (req, res) => {
 
       for (const cartItem of cart.products) {
         // Stock
+        //Mover al Dao de Products
         const product = await productModel.findById(cartItem.product);
         if (product.stock >= cartItem.quantity) {
           product.stock -= cartItem.quantity;
@@ -165,6 +167,8 @@ exports.createCart = async (req, res) => {
       await cart.save();
       const resume = cart.products.map(async (p) => {
         const data = {};
+
+        //Mover al Dao de products
         data.info = await productModel.findById(p.product);
         data.quantity = p.quantity;
         data.total = data.info.price * p.quantity;
@@ -177,7 +181,7 @@ exports.createCart = async (req, res) => {
 
       const mailOptions = {
         to: req.user.email,
-        subject: 'Cuenta Eliminada',
+        subject: 'Tu Compra fue exitosa',
         html: `<p>Hola <b>${req.user.first_name} ${req.user.last_name}</b>,</p>
         <img src="https://www.compudemano.com/wp-content/uploads/2019/01/gracias-por-tu-compra.jpg" style="width:250px"/>
       <p>Gracias por usar nuestros servicios</p>`,

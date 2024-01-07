@@ -1,3 +1,5 @@
+
+<div class="position-absolute top-50 start-50 translate-middle">
 <form method="POST" action="/api/sessions/" class="border p-3 form ">
     <label for="email" class="form-label">Email</label>
     <input type="email" name="email" id="email" class="form-control" placeholder="Ingrese su Email">
@@ -5,14 +7,15 @@
     <label for="password" class="form-label pt-2 ">Contraseña</label>
     <input type="password" name="password" id="password" class="form-control" placeholder="Ingrese su Contraseña">
 
-    <button type="submit" class="btn btn-warning mt-2 mx-5" style="width: 100px;">Login</button>
+    <button type="submit" class="btn btn-warning mt-2 mx-5" style="width: 150px;">Login</button>
 
 </form>
 
-<div>
+<div class="container mx-5">
     <a href="./sessions/recoverPassword">Olvide mi Contraseña</a>
 </div>
 
-<div>
+<div class="container mx-3">
     <p>No tienes cuenta ? <a href="./sessions/register">Registrarte</a></p>
+</div>
 </div>

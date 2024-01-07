@@ -8,7 +8,7 @@
         </button>
         <button style="border: none;  background: none; padding:2px; margin-right:12px;">
                     <a class="btn btn-danger"style="border-radius: 85px; padding: 20px;" onclick="DeleteUsers()">
-                         <i class="bi bi-person-dash"></i> Eliminar Users Inactivos
+                         <i class="bi bi-person-dash"></i> Eliminar Users Inactivos (en 2 dias)
                     </a>
         </button>
     </div>
@@ -20,6 +20,7 @@
             
                     <th style="font-size: 20px;">Email</th>
                     <th style="font-size: 20px;">Rol</th>
+                    <th style="font-size: 20px;">Última Conexión</th> 
                     <th style="font-size: 20px;">Opciones</th>
                     
                 </tr>
@@ -33,12 +34,13 @@
                 </td>
                 <td> {{this.email}} </td>
                 <td> {{this.rol}}</td>
+                <td> {{this.last_connection_formatted}} </td>
                 <td>
                     <button class="btn btn-warning" id="{{this._id}}" rol="{{this.rol}}" onclick="changeRol('{{this._id}}','{{this.rol}}')">Cambiar Rol a User / Premium</button></a>
 
                 </td>
                 <td>
-                <a class="btn btn-danger" id="{{this._id}}" rol="{{this.rol}}" >Delete</a>
+                <a class="btn btn-danger" id="{{this._id}}" rol="{{this.rol}}" onclick="DeleteUser('{{this._id}}','{{this.rol}}')" >Delete</a>
                 </td>
             </tr>
         {{/each}}
@@ -111,6 +113,31 @@ function DeleteUsers(){
             location.reload();
           } else {
             console.error("Error al eliminar users AFK");
+          }
+        })
+        .catch((error) => {
+          console.error("Error al eliminar users", error);
+        });
+}
+
+function DeleteUser(uid){
+    fetch(`/api/users/${uid}`, {
+                method: 'DELETE',
+            })
+        .then((res) => {
+          if (res.ok) {
+            Toastify({
+            text: "User Eliminado",
+            gravity: "bottom",
+            position: "right",
+            style: {
+                background: "linear-gradient(to right, #66ff66, #33cc33)",
+            },duration: 1000
+            }).showToast();
+            console.log("User Eliminado");
+            location.reload();
+          } else {
+            console.error("Error al eliminar user");
           }
         })
         .catch((error) => {
