@@ -200,16 +200,19 @@ exports.getDocumentList = async (req, res) => {
         return res.status(404).send('Usuario no encontrado');
     }
 
+    let docs = user.documents
     const documents = user.documents.map(document => {
-        const fileNameMatch = document.reference.match(/\\([^\\]+)$/);
+        const fileNameMatch = document.reference.match(/\/([^\/]+)$/);
         const fileName = fileNameMatch ? fileNameMatch[1] : null;
-        const fileType = document.reference.includes('public\\documents') ? 'Document' :
-                        document.reference.includes('public\\products') ? 'Product' :
-                        document.reference.includes('public\\profile') ? 'Profile' : 'Unknown';
+        const fileType = document.reference.includes('public/documents') ? 'Document' :
+                        document.reference.includes('public/products') ? 'Product' :
+                        document.reference.includes('public/profile') ? 'Profile' : 'Unknown';
         return { fileName, fileType };
     }).filter(file => file.fileName !== null);
 
-    res.render('myDocuments', { documents });
+    console.log(documents)
+    console.log(docs)
+    res.render('myDocuments', { documents: documents });
 } catch (error) {
     console.error('Error al obtener la lista de documentos:', error);
     res.status(500).send('Error interno del servidor');
