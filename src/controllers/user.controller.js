@@ -200,7 +200,6 @@ exports.getDocumentList = async (req, res) => {
         return res.status(404).send('Usuario no encontrado');
     }
 
-    let docs = user.documents
     const documents = user.documents.map(document => {
         const fileNameMatch = document.reference.match(/\/([^\/]+)$/);
         const fileName = fileNameMatch ? fileNameMatch[1] : null;
@@ -210,8 +209,7 @@ exports.getDocumentList = async (req, res) => {
         return { fileName, fileType };
     }).filter(file => file.fileName !== null);
 
-    console.log(documents)
-    console.log(docs)
+    
     res.render('myDocuments', { documents: documents });
 } catch (error) {
     console.error('Error al obtener la lista de documentos:', error);
